@@ -7,7 +7,7 @@ import {useNavigation}  from '@react-navigation/native';
 
 
 
-const inicial : React.FC = () => {
+const Inicial : React.FC = () => {
     const navigation = useNavigation();
     function handleNextStep (){
         // navigation.navigate('denunciar')
@@ -140,4 +140,4 @@ const styles = StyleSheet.create({
     
  })
 
-export default inicial;
+export default Inicial;

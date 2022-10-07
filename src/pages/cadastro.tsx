@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable } from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView } from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 
 
@@ -7,53 +7,65 @@ import {useNavigation}  from '@react-navigation/native';
 const Cadastro : React.FC = () => {
     const navigation = useNavigation();
     function handleNextStep (){
-        // navigation.navigate('denunciar')
+        // navigation.navigate('Denunciar')
     }
     return (
-        
-       <View style={styles.container}>
+        <ScrollView style={styles.container}>
+             
             
             <TextInput style={styles.input} placeholder="Email" keyboardType="email-address"/>
            
             <TextInput placeholder="Nome" style={styles.input}/>
 
             
-            <TextInput style={styles.input} placeholder="Senha"/>
+            <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
             <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
                 <Text style={styles.buttonText}>Cadastrar</Text>
             </Pressable>
 
 
-       </View>
+       
+
+        </ScrollView>
+      
     );
 }
 const styles = StyleSheet.create({
     container : {
         flex: 1,
+        width: "100%",
+        marginHorizontal: 12
+        
     },
     input: {
         height: 40,
         margin: 12,
+        width: 1300,
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+       
+    
     },
     cadastro: {
-        padding: 2,
+        
         backgroundColor: '#000000',
         borderWidth: 4,
         borderColor: '#000000',
-        paddingTop: 4,
-        paddingBottom: 4,
-        paddingLeft: 4,
-        paddingRight: 8,
+        paddingTop: 6,
+        paddingBottom: 6,
         borderRadius: 10,
-        
         alignItems: 'center',
         marginTop : 9,
-        marginBottom : 8
-
-
+        height: 40,
+        margin: 580,
+        width: 200,
+       
+        padding: 10,
+        
     },
     buttonText : {
         fontFamily: 'Roboto',
