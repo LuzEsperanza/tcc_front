@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView} from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import {Feather} from '@expo/vector-icons'
-
+import {Feather} from '@expo/vector-icons';
+import MapView, {Marker, Callout, PROVIDER_GOOGLE}  from 'react-native-maps';
 
 
 const Denunciar : React.FC = () => {
@@ -35,25 +35,41 @@ const Denunciar : React.FC = () => {
 
             <Text  style={styles.title}>Descrição</Text>
             <TextInput multiline style={[styles.input,{height:110}]}/>
+           
+           <View style={styles.mapContainer}>
+           <MapView
+                 initialRegion={{
+                    latitude:-27.2092052,
+                    longitude:-49.6401092,
+                    latitudeDelta: 0.008,
+                    longitudeDelta: 0.008,
+                 }}
+                 pitchEnabled={false}
+                 scrollEnabled={false}
+                 rotateEnabled={false}
+                 style={styles.mapStyle}
+                
+            >
+                
+               
+            </MapView>
+
+           </View>
+            
+          
+            
+
 
             <Text  style={styles.title}>Foto</Text>
+
+            
+           
             <View style={styles.caixa}>
             <TouchableOpacity style={styles.imageInput} >
                 <Feather name="plus" size={24}/>
 
             </TouchableOpacity>
-            <TouchableOpacity style={styles.imageInput} >
-                <Feather name="plus" size={24}/>
-
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.imageInput} >
-                <Feather name="plus" size={24}/>
-
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.imageInput} >
-                <Feather name="plus" size={24}/>
-
-            </TouchableOpacity>
+            
 
             </View>
            
@@ -106,8 +122,8 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 54,
-        margin: 12,
-        width: 1300,
+       
+        width: '90%',
         borderWidth: 1.4,
         padding: 10,
         borderRadius: 10,
@@ -123,8 +139,8 @@ const styles = StyleSheet.create({
     },
     caixa: {
         height: 110,
-        margin: 12,
-        width: 1300,
+        
+        width: '90%',
         borderWidth: 1.4,
         padding: 10,
         borderRadius: 10,
@@ -142,10 +158,29 @@ const styles = StyleSheet.create({
         borderWidth: 1.4,
         borderRadios: 20,
         height: 80,
-        width: 250,
+        width: 300,
         justifyContent:'center',
         alignItems: 'center',
         marginBottom: 10
+    },
+    mapStyle: {
+        width: '100%',
+        height: 150,
+        
+        
+        
+
+    },
+    mapContainer: {
+        borderRadius: 20,
+        overflow: 'hidden',
+        borderWidth: 1.4,
+        borderColor: '#000000',
+        width: '90%',
+        backgroundColor: '#f9fafc',
+        height: 150,
+        marginBottom: 10
+
     },
     cadastro: {
         
@@ -157,11 +192,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop : 9,
-        height: 40,
-        margin: 620,
+        
+        margin: 20,
         width: 200,
         justifyContent: 'center',
         padding: 10,
+        marginLeft: 80,
+        marginBottom: 80
         
     },
     buttonText : {

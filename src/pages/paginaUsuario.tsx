@@ -42,13 +42,14 @@ const styles = StyleSheet.create({
     container : {
         flex: 1,
         width: "100%",
-        marginHorizontal: 12
+        marginHorizontal: 12,
+        height: '100%'
         
     },
     input: {
         height: 40,
         margin: 12,
-        width: 1300,
+        width: '90%',
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     button :{
         height: 110,
         margin: 12,
-        width: 1300,
+        width: '90%',
         padding: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     },
     deletar: {
         height: 50,
-        width: 200,
+        width: '40%',
         borderRadius: 10,
         backgroundColor: '#f9fafc',
         borderWidth: 4,
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
    
     atualizar: {
         height: 50,
-        width: 200,
+        width: '40%',
         borderRadius: 10,
         backgroundColor: '#808080',
         borderWidth: 4,

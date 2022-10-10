@@ -14,35 +14,15 @@ import HeaderP from './components/HeaderP'
 const {Navigator, Screen} = createNativeStackNavigator();
 const Routes : React.FC = () => {
     return (
+
         <NavigationContainer >
             <Navigator>
-                <Screen
-                name="Acompanhemento"
-                component={AcompanhamentoDenuncia}
-                options ={{
-                    headerShown:true,
-                    header: ()=><HeaderP title='acompanhamento'/>
 
-                }}
-                />
-                <Screen
-                name="Usuario"
-                component={PaginaUsuario}
-                options ={{
-                    headerShown:true,
-                    header: ()=><Header  title='Meu Perfil'/>
-
-                }}
-                />
             <Screen 
-                name="Denunciar"
-                component={Denunciar}
-                options ={{
-                    headerShown:true,
-                    header: ()=><Header  title='Denunciar'/>
-
-                }}
-                />
+                name="Inicial"
+                component={Inicial} 
+                options ={{headerShown:false}}/>
+            
             <Screen 
                 name="Cadastro"
                 component={cadastro}
@@ -52,12 +32,38 @@ const Routes : React.FC = () => {
 
                 }}
                 />
+            <Screen
+                name="Usuario"
+                component={PaginaUsuario}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Meu Perfil'/>
+
+                }}
+                />
+            <Screen
+                name="Acompanhemento"
+                component={AcompanhamentoDenuncia}
+                options ={{
+                    headerShown:true,
+                    header: ()=><HeaderP title='acompanhamento'/>
+
+                }}
+                />
+                <Screen 
+                name="Denunciar"
+                component={Denunciar}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Denunciar'/>
+
+                }}
+                />
+                
+                
             
             
-            <Screen 
-                name="Inicial"
-                component={Inicial} 
-                options ={{headerShown:false}}/>
+            
             
             
             

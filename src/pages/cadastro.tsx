@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     input: {
         height: 40,
         margin: 12,
-        width: 1300,
+        width: '90%',
         borderWidth: 1,
         padding: 10,
         borderRadius: 10,
@@ -60,11 +60,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop : 9,
-        height: 40,
-        margin: 580,
+        
+        margin: 20,
         width: 200,
-       
+        justifyContent: 'center',
         padding: 10,
+        marginLeft: 80,
+        marginBottom: 80
         
     },
     buttonText : {
