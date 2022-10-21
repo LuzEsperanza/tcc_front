@@ -3,13 +3,15 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Inicial from './pages/Inicial'
-import cadastro from './pages/cadastro'
+import Cadastro from './pages/Cadastro'
 import Denunciar from './pages/Denunciar';
-import PaginaUsuario from './pages/paginaUsuario';
-import AcompanhamentoDenuncia from './pages/AcopanhamentoDenucia';
+import Usuario from './pages/Usuario';
+import Principal from './pages/Principal';
+import Login from './pages/Login';
 
 import Header from './components/Header';
 import HeaderP from './components/HeaderP'
+
 
 const {Navigator, Screen} = createNativeStackNavigator();
 const Routes : React.FC = () => {
@@ -25,7 +27,7 @@ const Routes : React.FC = () => {
             
             <Screen 
                 name="Cadastro"
-                component={cadastro}
+                component={Cadastro}
                 options ={{
                     headerShown:true,
                     header: ()=><Header  title='Cadastre-se'/>
@@ -34,7 +36,7 @@ const Routes : React.FC = () => {
                 />
             <Screen
                 name="Usuario"
-                component={PaginaUsuario}
+                component={Usuario}
                 options ={{
                     headerShown:true,
                     header: ()=><Header  title='Meu Perfil'/>
@@ -42,11 +44,11 @@ const Routes : React.FC = () => {
                 }}
                 />
             <Screen
-                name="Acompanhemento"
-                component={AcompanhamentoDenuncia}
+                name="Principal"
+                component={Principal}
                 options ={{
                     headerShown:true,
-                    header: ()=><HeaderP title='acompanhamento'/>
+                    header: ()=><HeaderP title='Principal'/>
 
                 }}
                 />
@@ -59,7 +61,15 @@ const Routes : React.FC = () => {
 
                 }}
                 />
-                
+                 <Screen 
+                name="Login"
+                component={Login}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Faça seu login'/>
+
+                }}
+                />
                 
             
             

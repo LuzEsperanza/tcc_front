@@ -2,18 +2,14 @@ import React from 'react';
 import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
 import {RectButton, ScrollView, TextInput} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
-import {useNavigation}  from '@react-navigation/native';
-import {Card} from 'react-native-paper'
 
 
 
 
 
-const AcompanhamentoDenuncia : React.FC = () => {
-    const navigation = useNavigation();
-    function handleNextStep (){
-        // navigation.navigate('denunciar')
-    }
+
+const Principal : React.FC = () => {
+    
     return (
         <ScrollView >
         <Text style={styles.titulo}>Minhas Denúncias</Text>
@@ -174,4 +170,4 @@ const styles = StyleSheet.create({
     
  })
 
-export default AcompanhamentoDenuncia;
+export default Principal;

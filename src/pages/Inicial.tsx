@@ -1,5 +1,5 @@
 import React from 'react';
-import { View,Text, StyleSheet, Pressable} from 'react-native';
+import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation}  from '@react-navigation/native';
@@ -9,24 +9,32 @@ import {useNavigation}  from '@react-navigation/native';
 
 const Inicial : React.FC = () => {
     const navigation = useNavigation();
-    function handleNextStep (){
-        // navigation.navigate('denunciar')
+    function Login (){
+        navigation.navigate('Login')
     }
+    function Anonimo (){
+        navigation.navigate('Denunciar')
+    }
+    function Cadastrar (){
+        navigation.navigate('Cadastro')
+    }
+    
+
     return (
        <View style={styles.container}>
         
-      
+            <Image  style={styles.tinyLogo} source={require('../images/b.png')}/>
             <Text  style={styles.titulo}>Butterfly </Text>
             <Text style={styles.subtitulo}>Denuncie crimes ambientais aqui!</Text>
             <Text style={styles.aviso}>Como deseja entrar?</Text>
-            <Pressable  style={styles.tenhoConta} onPress={()=>handleNextStep()}>
+            <Pressable  style={styles.tenhoConta} onPress={()=>Login()}>
                 {/* <Feather name="user" size={20} color="#000000"></Feather> */}
                 <Text style={styles.buttonText}>Tenho conta</Text>
             </Pressable>
-            <Pressable  style={styles.anonimamente} onPress={()=>handleNextStep()}>
+            <Pressable  style={styles.anonimamente} onPress={()=>Anonimo()}>
                 <Text style={styles.buttonText}>Anonimamente</Text>
             </Pressable>
-            <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
+            <Pressable  style={styles.cadastro} onPress={()=>Cadastrar()}>
                 <Text style={styles.buttonTextCadastro}>Cadastre-se</Text>
             </Pressable>
 
@@ -130,8 +138,8 @@ const styles = StyleSheet.create({
 
     },
     tinyLogo: {
-        width: 50,
-        height: 50,
+        width: 166,
+        height: 100,
       },
       logo: {
         width: 66,

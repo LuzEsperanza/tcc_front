@@ -9,7 +9,7 @@ import MapView, {Marker, Callout, PROVIDER_GOOGLE}  from 'react-native-maps';
 const Denunciar : React.FC = () => {
     const navigation = useNavigation();
     function handleNextStep (){
-        // navigation.navigate('denunciar')
+        navigation.navigate('Principal')
     }
     return (
         <ScrollView style={styles.container}>

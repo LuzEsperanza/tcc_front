@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text} from 'react-native';
+import { View, StyleSheet, Text, Pressable} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native'
@@ -18,19 +18,13 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
    
     return (
        <View style={styles.container}>
-        <BorderlessButton onPress={navigation.goBack}>
+          <Pressable onPress={navigation.goBack}>
             <Feather name="arrow-left" size={24} color="#15b6d5"/>
-        </BorderlessButton>
+       
+          </Pressable>
+           
         <Text style={styles.title}>{title}</Text>
-        {showX ? (
-            <BorderlessButton >
-            <Feather name="x" size={24} color="#ff669c"/>
-        </BorderlessButton>
-        ):(
-            <View/>
-        )
-        
-        }
+       <View/>
         
        </View>
     );

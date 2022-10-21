@@ -14,16 +14,22 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
     const navigation = useNavigation();
     function handleNextStep (){
-        // navigation.navigate('Denunciar')
+        navigation.navigate('Denunciar')
+    }
+
+    function usuario (){
+        navigation.navigate('Usuario')
     }
 
     
    
     return (
        <View style={styles.container}>
-        <BorderlessButton onPress={navigation.goBack}>
+          <Pressable onPress={navigation.goBack}>
             <Feather name="arrow-left" size={24} color="#15b6d5"/>
-        </BorderlessButton>
+          </Pressable>
+            
+       
         
         <Pressable  style={styles.denunciar} onPress={()=>handleNextStep()}>
                
@@ -31,9 +37,12 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
             </Pressable>
         
         {showX ? (
-            <BorderlessButton >
-            <Feather name="user" size={24} color="#000000"/>
-        </BorderlessButton>
+            <Pressable onPress={()=>usuario()}>
+                <Feather name="user" size={24} color="#000000"/>
+
+            </Pressable>
+            
+        
         ):(
             <View/>
         )

@@ -1,27 +1,31 @@
 import React from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView } from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 
 
 
-const Cadastro : React.FC = () => {
+const Login : React.FC = () => {
     const navigation = useNavigation();
     function handleNextStep (){
-        // navigation.navigate('Denunciar')
+        navigation.navigate('Principal')
     }
     return (
         <ScrollView style={styles.container}>
              
             
-            <TextInput style={styles.input} placeholder="Email" keyboardType="email-address"/>
+            <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'/>
            
-            <TextInput placeholder="Nome" style={styles.input}/>
+          
 
             
             <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
-            <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
-                <Text style={styles.buttonText}>Cadastrar</Text>
+           
+            <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
+                <Text style={styles.text}>Enviar</Text>
             </Pressable>
+
+           
+
 
 
        
@@ -34,7 +38,8 @@ const styles = StyleSheet.create({
     container : {
         flex: 1,
         width: "100%",
-        marginHorizontal: 12
+        marginHorizontal: 12,
+        height: '100%'
         
     },
     input: {
@@ -47,11 +52,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-       
+        backgroundColor: '#f9fafc',
+        borderColor: '#000000',
     
     },
-    cadastro: {
-        
+   
+   
+   
+    atualizar: {
         backgroundColor: '#000000',
         borderWidth: 4,
         borderColor: '#000000',
@@ -72,11 +80,23 @@ const styles = StyleSheet.create({
     buttonText : {
         fontFamily: 'Roboto',
         fontSize: 20,
+        color: '#000000'
+
+    },
+    text : {
+        fontFamily: 'Roboto',
+        fontSize: 20,
         color: '#f9fafc'
 
     },
+    tinyLogo: {
+        width: 166,
+        height: 200,
+        left: 100,
+        marginTop: 10
+      },
     
  })
 
 
-export default Cadastro;
+export default Login;

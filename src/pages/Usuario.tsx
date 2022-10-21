@@ -1,18 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView } from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 
 
 
-const PaginaUsuario : React.FC = () => {
+const Usuario : React.FC = () => {
     const navigation = useNavigation();
     function handleNextStep (){
-        // navigation.navigate('Denunciar')
+        navigation.navigate('Principal')
     }
     return (
         <ScrollView style={styles.container}>
              
-            
+            <Image  style={styles.tinyLogo} source={require('../images/images.png')}/>
             <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'/>
            
             <TextInput placeholder="Nome" style={styles.input} autoComplete='name'/>
@@ -110,9 +110,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#f9fafc'
 
-    }
+    },
+    tinyLogo: {
+        width: 166,
+        height: 200,
+        left: 100,
+        marginTop: 10
+      },
     
  })
 
 
-export default PaginaUsuario;
+export default Usuario;
