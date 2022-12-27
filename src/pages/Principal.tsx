@@ -1,70 +1,107 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
 import {RectButton, ScrollView, TextInput} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
+import {useFocusEffect, useRoute}  from '@react-navigation/native';
+import api from '../services/api'
 
 
-
-
+interface Denuncia{
+    id:number;
+    
+    descricao:string;
+    horaDenuncia: string;
+    encaminhado: string;
+    condicao: string;
+     CrimeAmbiental:{
+        tilulo:string;
+    }
+    
+    
+    
+}
 
 
 const Principal : React.FC = () => {
+    const route = useRoute();
+    
+    const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
+    const denunciante = route.params;
+   
+    useEffect(()=>{
+       
+       
+        
+        const consulta = '/denuncia/';
+        const teste = consulta.concat(denunciante.toString())
+
+        console.log(denunciante)
+        console.log(teste)
+        api.get(teste).then(response=>{
+            setDenuncias(response.data)
+            console.log(denuncias)
+        });
+    }, [denuncias]);
     
     return (
         <ScrollView >
-        <Text style={styles.titulo}>Minhas Denúncias</Text>
-        <View style={styles.caixa}>
+            <Text style={styles.titulo}>Minhas denúncias</Text>
+
+            {denuncias.map(denuncia =>(
+                <View key={denuncia.id} style={styles.caixa}>
             
-            <Text style={styles.title}>Abandono de animais</Text>
+                    <Text style={styles.title}>{denuncia.CrimeAmbiental.tilulo}</Text>
             
             
-            <View style={styles.caixa2}>
-                <View>
-                    <Text style={styles.status}>Status da denúncia</Text>
+                    <View style={styles.caixa2}>
+                        <View>
+                            <Text style={styles.status}>Status da denúncia</Text>
                     
-                        <TextInput style={styles.input}>
-                            <Text>PENDENTE</Text>
-                        </TextInput>
+                                <TextInput style={styles.input}>
+                                    <Text>{denuncia.condicao}</Text>
+                                </TextInput>
 
-                </View>
-                <View>
-                    <Text style={styles.status}>Data de criação</Text>
-                    <View style={styles.input}>
-                    <Feather  size={20} style={styles.calendario} name='calendar'/>
-                    <Text  style={styles.data}>12/09/2019</Text>
+                        </View>
 
-                    </View>
+                        <View>
+                            <Text style={styles.status}>Data de criação</Text>
+                            <View style={styles.input}>
+                                <Feather  size={20} style={styles.calendario} name='calendar'/>
+                                <Text  style={styles.data}>{denuncia.horaDenuncia}</Text>
+
+                            </View>
                    
-
-                </View>
-                
-                
-            </View>
-            <View style={styles.caixa2}>
-                <View>
-                    <Text style={styles.status}>Descrição</Text>
-                    
-                        <TextInput style={styles.input}>
-                            <Text>Abandono de gatos na praça</Text>
-                        </TextInput>
-
-                </View>
-                <View>
-                    <Text style={styles.status}>Encaminhada</Text>
-                    <View style={styles.input}>
-                    
-                    <Text  style={styles.data}>Ministério Público</Text>
-
+                        </View>
+                                
                     </View>
+
+                    <View style={styles.caixa2}>
+                        <View>
+                            <Text style={styles.status}>Descrição</Text>
+                    
+                                <TextInput style={styles.input}>
+                                    <Text>{denuncia.descricao}</Text>
+                                </TextInput>
+
+                        </View>
+
+                        <View>
+                            <Text style={styles.status}>Encaminhada</Text>
+
+                            <View style={styles.input}>
+                    
+                                <Text  style={styles.data}>{denuncia.encaminhado}</Text>
+
+                            </View>
                    
-
-                </View>
+                        </View>
                 
-            </View>
-        </View>
+                    </View>
+                    
+                </View>)
+            )}
 
-
-   </ScrollView>
+        </ScrollView>
        
     );
 }

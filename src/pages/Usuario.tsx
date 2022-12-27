@@ -1,35 +1,68 @@
-import React from 'react';
+import React, {useEffect,useState} from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
-import {useNavigation}  from '@react-navigation/native';
+import {useNavigation, useRoute}  from '@react-navigation/native';
 
+import api from '../services/api'
+import AppLoading from 'expo-app-loading';
+interface ParamsId{
+   id: number;
+}
 
+interface Denunciante{
+    DenuncianteID:number;
+    nome:string;
+    senha:string;
+    email:string
+}
 
 const Usuario : React.FC = () => {
+    const route = useRoute();
+    const paramsId = route.params as ParamsId;
+    
+    const [denunciante, setDenunciante] = useState<Denunciante>();
+    useEffect(()=>{
+        api.get('/denunciante/${1}').then(response=>{
+            setDenunciante(response.data)
+            console.log(denunciante)
+        });
+    },[paramsId.id]);
+    if(!denunciante){
+        return <AppLoading/>
+    }
     const navigation = useNavigation();
     function handleNextStep (){
         navigation.navigate('Principal')
     }
     return (
         <ScrollView style={styles.container}>
-             
-            <Image  style={styles.tinyLogo} source={require('../images/images.png')}/>
-            <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'/>
            
-            <TextInput placeholder="Nome" style={styles.input} autoComplete='name'/>
+                <View  >
+                    <Image  style={styles.tinyLogo} source={require('../images/images.png')}/>
 
+                    <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'>
+                        {denunciante.email}    
+                    </TextInput>    
+           
+                    <TextInput placeholder="Nome" style={styles.input} autoComplete='name'>
+                        {denunciante.nome}
+                    </TextInput>
             
-            <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
-            <View style={styles.button}>
-            <Pressable  style={styles.deletar} onPress={()=>handleNextStep()}>
-                <Text style={styles.buttonText}>Deletar</Text>
-            </Pressable>
-            <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
-                <Text style={styles.text}>Atualizar</Text>
-            </Pressable>
+                   <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
+                        {denunciante.senha}
+                   <View style={styles.button}>
 
-            </View>
+                        <Pressable  style={styles.deletar} onPress={()=>handleNextStep()}>
+                            <Text style={styles.buttonText}>Deletar</Text>
+                        </Pressable>
+
+                        <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
+                            <Text style={styles.text}>Atualizar</Text>
+                        </Pressable>
+
+                    </View>
             
-
+                </View>           
+            
 
 
        

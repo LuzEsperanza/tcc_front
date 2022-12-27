@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
 import {RectButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation}  from '@react-navigation/native';
-
+import api from '../services/api'
 
 
 

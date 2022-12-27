@@ -1,40 +1,92 @@
-import React from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions} from 'react-native';
-import {useNavigation}  from '@react-navigation/native';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking} from 'react-native';
+import {useNavigation, useRoute}  from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
-import MapView, {Marker, Callout, PROVIDER_GOOGLE}  from 'react-native-maps';
-
-
+import MapView, {Marker, Callout, PROVIDER_GOOGLE, MapEvent}  from 'react-native-maps';
+import mapMaker from '../images/marcador.svg'
+import * as ImagePicker from 'expo-image-picker';
+import api from '../services/api';
 const Denunciar : React.FC = () => {
     const navigation = useNavigation();
-    function handleNextStep (){
-        navigation.navigate('Principal')
+    const [titulo, setTitulo] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [rua, setRua] = useState('');
+    const [numero, setNumero] = useState('');
+    const [complemento, setComplemento] = useState('');
+    const [horarioAbordagem, setHora] = useState('');
+    const [nome, setNome] = useState<string[]>([]);
+    const [imagensURI, setImagesURI] = useState<string[]>([]);
+    
+
+    const [position, setPosition] = useState({latitude:0,longitude:0})
+    
+    function handleSelectMapPosition(event:MapEvent){
+       setPosition(event.nativeEvent.coordinate)
+    }
+    async function handleNextStep (){
+        console.log(nome, titulo,descricao,numero, rua,complemento, horarioAbordagem)
+        
+        await api.post('/denuncia', {descricao, horarioAbordagem, rua, numero, complemento }).then((response) =>
+        {
+           return response.data
+          
+           
+        })
+        
+        // navigation.navigate('Principal')
+        
+        
+    }
+    async function selectImagens() {
+       const {status} = await ImagePicker.requestCameraPermissionsAsync();
+       if(status != 'granted'){
+        alert('permita acesso as suas fotos')
+        return
+       }
+       const result = await ImagePicker.launchImageLibraryAsync({
+        allowsEditing:true,
+        quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+       })
+       console.log(result);
+
+        if (result.cancelled) {
+          return;
+        }
+        
+        // const { uri } = result;
+
+        // setImagesURI([...imagensURI, uri]);
+
+
+        
+
     }
     return (
         <ScrollView style={styles.container}>
              
-            <Text style={styles.title}>Nome do suspeito</Text>
-            <TextInput style={styles.input}/>
+            <Text  style={styles.title}>Nome do suspeito</Text>
+            <TextInput  style={styles.input} />
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
-            <TextInput style={styles.input}/>
+            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
 
             <Text style={styles.local}>Local do ocorrido</Text>
-            <Text  style={styles.title}>Rua</Text>
-            <TextInput style={styles.input}/>
+            <Text  style={styles.title} >Rua</Text>
+            <TextInput style={styles.input}   value={rua} onChangeText={setRua}/>
 
             <Text  style={styles.title}>Numero</Text>
-            <TextInput style={styles.input} keyboardType="numeric"/>
+            <TextInput style={styles.input} keyboardType="numeric" value={numero} onChangeText={setNumero}/>
 
             <Text style={styles.title}>Complemento</Text>
-            <TextInput style={styles.input}/>
+            <TextInput style={styles.input}  value={complemento} onChangeText={setComplemento}/>
 
             <Text style={styles.title}>Horário de abordagem</Text>
-            <TextInput style={styles.input}/>
+            <TextInput style={styles.input} value={horarioAbordagem} onChangeText={setHora}/>
 
             <Text  style={styles.title}>Descrição</Text>
-            <TextInput multiline style={[styles.input,{height:110}]}/>
+            <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
            
            <View style={styles.mapContainer}>
            <MapView
@@ -48,36 +100,44 @@ const Denunciar : React.FC = () => {
                  scrollEnabled={false}
                  rotateEnabled={false}
                  style={styles.mapStyle}
+                 onPress={handleSelectMapPosition}
                 
             >
-                
+                {position.latitude != 0 && (
+                    <Marker
+                    icon={mapMaker}
+                    coordinate={{
+                       latitude:position.latitude,
+                       longitude:position.latitude,
+   
+                    }}
+                   />
+
+                )}
+               
                
             </MapView>
 
            </View>
-            
-          
+                    
             
 
 
             <Text  style={styles.title}>Foto</Text>
-
-            
-           
-            <View style={styles.caixa}>
-            <TouchableOpacity style={styles.imageInput} >
+                     
+            <TouchableOpacity style={styles.imageInput} onPress={selectImagens}>
                 <Feather name="plus" size={24}/>
 
             </TouchableOpacity>
             
 
-            </View>
+           
            
 
 
             
            
-            <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
+            <Pressable  style={styles.cadastro} onPress={handleNextStep}>
                 <Text style={styles.buttonText}>Enviar</Text>
             </Pressable>
 

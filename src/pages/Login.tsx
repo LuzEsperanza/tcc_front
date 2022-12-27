@@ -1,24 +1,52 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
+import api from '../services/api'
 
 
 
 const Login : React.FC = () => {
+    const [email, setEmail] = useState(String);
+    const [senha, setSenha] = useState(String);
     const navigation = useNavigation();
-    function handleNextStep (){
-        navigation.navigate('Principal')
+    
+    async function handleNextStep (){
+        const data = new FormData();
+        data.append('email', email);
+        data.append('senha', senha);
+        
+        const denunciante = await api.post('/denunciante/login', {email, senha}).then((response) =>
+        {
+           return response.data.denuncianteID
+      
+               
+        })
+        
+        
+        navigation.navigate('Principal', denunciante)
+        
     }
     return (
         <ScrollView style={styles.container}>
              
             
-            <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'/>
+            <TextInput 
+            style={styles.input} 
+             placeholder="Email" 
+             keyboardType="email-address" 
+             autoComplete='email' 
+             value={email}
+             onChangeText={setEmail}
+             />
            
           
 
             
-            <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
+            <TextInput style={styles.input}
+             placeholder="Senha" secureTextEntry={true} 
+             value={senha}
+             onChangeText={setSenha}
+             />
            
             <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
                 <Text style={styles.text}>Enviar</Text>

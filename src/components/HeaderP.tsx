@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, Pressable} from 'react-native';
 import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native'
+import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useRoute}  from '@react-navigation/native';
 
 interface HeaderProps {
     title:string;
@@ -18,6 +19,9 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
     }
 
     function usuario (){
+        const route = useRoute();
+        const denunciante = route.params;
+       
         navigation.navigate('Usuario')
     }
 

@@ -1,24 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView } from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
+import api from '../services/api';
 
 
-
-const Cadastro : React.FC = () => {
+const Cadastro : React.FC = () => { 
+    const [email, setEmail] = useState(String);
+    const [senha, setSenha] = useState(String);
+    const [nome, setNome] = useState(String);
     const navigation = useNavigation();
-    function handleNextStep (){
+
+    async function handleNextStep (){
+        
+        await api.post('/denunciante/cadastro', {nome, email, senha}).then((response) =>
+        {
+           console.log(response)
+           
+           
+        })
         navigation.navigate('Denunciar')
     }
+
     return (
         <ScrollView style={styles.container}>
              
             
-            <TextInput style={styles.input} placeholder="Email" keyboardType="email-address"/>
+            <TextInput 
+            style={styles.input} 
+            placeholder="Email"
+            keyboardType="email-address"
+            onChangeText={setEmail}/>
            
-            <TextInput placeholder="Nome" style={styles.input}/>
+            <TextInput 
+            placeholder="Nome" 
+            style={styles.input}
+            onChangeText={setNome}/>
 
             
-            <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
+            <TextInput
+            style={styles.input} 
+            placeholder="Senha" 
+            secureTextEntry={true}
+            onChangeText={setSenha}
+            />
             <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
                 <Text style={styles.buttonText}>Cadastrar</Text>
             </Pressable>
