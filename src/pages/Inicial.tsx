@@ -9,10 +9,19 @@ import api from '../services/api'
 
 const Inicial : React.FC = () => {
     const navigation = useNavigation();
+    const anonimo = true;
     function Login (){
         navigation.navigate('Login')
     }
-    function Anonimo (){
+    async function Anonimo (){
+        // const denunciante = await api.post('/anonimo').then((response) =>
+        // {
+        //    return response.data.id
+      
+               
+        // })
+       
+
         navigation.navigate('Denunciar')
     }
     function Cadastrar (){

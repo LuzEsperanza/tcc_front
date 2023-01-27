@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking} from 'react-native';
+import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking, Button} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
@@ -7,27 +7,54 @@ import MapView, {Marker, Callout, PROVIDER_GOOGLE, MapEvent}  from 'react-native
 import mapMaker from '../images/marcador.svg'
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+
 const Denunciar : React.FC = () => {
+    
+    const route = useRoute();
+    const anonima = route.params;
+   
     const navigation = useNavigation();
     const [titulo, setTitulo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [complemento, setComplemento] = useState('');
-    const [horarioAbordagem, setHora] = useState('');
+   
     const [nome, setNome] = useState<string[]>([]);
     const [imagensURI, setImagesURI] = useState<string[]>([]);
-    
+   
+    const [geometria, setGeometria] = useState({latitude:0, longitude:0})
+    const latitude = geometria.latitude
+    const longitude= geometria.longitude
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [datePickerVisible, setDatePickerVisible] = useState(false);
+  
+    const showDatePicker = () => {
+      setDatePickerVisible(true);
+    };
+  
+    const hideDatePicker = () => {
+      setDatePickerVisible(false);
+    };
+  
+    const handleConfirm = (date) => {
+      setSelectedDate(date);
+      hideDatePicker();
+    };
+   
+        
+    const data =selectedDate.toISOString()
+    let horarioAbordagem = data.substring(11,19)
+   
 
-    const [position, setPosition] = useState({latitude:0,longitude:0})
-    
     function handleSelectMapPosition(event:MapEvent){
-       setPosition(event.nativeEvent.coordinate)
+       setGeometria(event.nativeEvent.coordinate)
     }
     async function handleNextStep (){
-        console.log(nome, titulo,descricao,numero, rua,complemento, horarioAbordagem)
+        console.log(nome, titulo,descricao,numero, rua,complemento,horarioAbordagem, geometria)
         
-        await api.post('/denuncia', {descricao, horarioAbordagem, rua, numero, complemento }).then((response) =>
+        await api.post('/denuncia', {descricao, horarioAbordagem, rua, numero, complemento, longitude, latitude  }).then((response) =>
         {
            return response.data
           
@@ -55,7 +82,7 @@ const Denunciar : React.FC = () => {
           return;
         }
         
-        // const { uri } = result;
+    //    const { uri } = result; 
 
         // setImagesURI([...imagensURI, uri]);
 
@@ -63,6 +90,7 @@ const Denunciar : React.FC = () => {
         
 
     }
+
     return (
         <ScrollView style={styles.container}>
              
@@ -81,10 +109,28 @@ const Denunciar : React.FC = () => {
 
             <Text style={styles.title}>Complemento</Text>
             <TextInput style={styles.input}  value={complemento} onChangeText={setComplemento}/>
-
+            
             <Text style={styles.title}>Horário de abordagem</Text>
-            <TextInput style={styles.input} value={horarioAbordagem} onChangeText={setHora}/>
 
+            <View style={styles.hora}>
+                < Button  title="Selecione um horário" onPress={showDatePicker} />
+
+            </View>         
+               
+            
+            <DateTimePickerModal
+
+              style={styles.title}
+              date={selectedDate}
+              isVisible={datePickerVisible}
+              mode="time"
+              is24Hour
+              locale="en_GB"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+            />        
+     
+              
             <Text  style={styles.title}>Descrição</Text>
             <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
            
@@ -103,12 +149,12 @@ const Denunciar : React.FC = () => {
                  onPress={handleSelectMapPosition}
                 
             >
-                {position.latitude != 0 && (
+                {geometria.latitude != 0 && (
                     <Marker
                     icon={mapMaker}
                     coordinate={{
-                       latitude:position.latitude,
-                       longitude:position.latitude,
+                       latitude:geometria.latitude,
+                       longitude:geometria.latitude,
    
                     }}
                    />
@@ -168,6 +214,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
     },
+    hora: {
+        flex: 1,
+        justifyContent: 'center',
+        // marginHorizontal: 16,
+        width: "90%",
+        height: 54,
+       
+    },
     local : {
         fontWeight: 'bold',
         fontSize: 18,
@@ -182,13 +236,13 @@ const styles = StyleSheet.create({
     },
     input: {
         height: 54,
-       
+        justifyContent: 'center',
         width: '90%',
         borderWidth: 1.4,
         padding: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        // justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 18,
         paddingHorizontal: 24,

@@ -14,7 +14,13 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const denunciante = route.params;
+    const id = JSON.stringify(denunciante)
+    const denuncianteID= parseInt(id)
     function handleNextStep (){
+        
+
         navigation.navigate('Denunciar')
     }
 

@@ -28,6 +28,7 @@ const Principal : React.FC = () => {
     const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
     const denunciante = route.params;
    
+   
     useEffect(()=>{
        
        
@@ -35,7 +36,7 @@ const Principal : React.FC = () => {
         const consulta = '/denuncia/';
         const teste = consulta.concat(denunciante.toString())
 
-        console.log(denunciante)
+        // console.log(denunciante)
         console.log(teste)
         api.get(teste).then(response=>{
             setDenuncias(response.data)
