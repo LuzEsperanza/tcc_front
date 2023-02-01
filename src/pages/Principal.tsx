@@ -28,7 +28,7 @@ const Principal : React.FC = () => {
     const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
     const denunciante = route.params;
    
-   
+   console.log(denunciante)
     useEffect(()=>{
        
        

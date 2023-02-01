@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking, Button} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking, Button, Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { State, TouchableOpacity } from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import MapView, {Marker, Callout, PROVIDER_GOOGLE, MapEvent}  from 'react-native-maps';
 import mapMaker from '../images/marcador.svg'
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {NomeInput} from '../components/NomeInput';
+import Icon from 'react-native-vector-icons/Feather';
 
 const Denunciar : React.FC = () => {
     
@@ -19,16 +21,17 @@ const Denunciar : React.FC = () => {
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
-    const [complemento, setComplemento] = useState('');
-   
-    const [nome, setNome] = useState<string[]>([]);
+     
     const [imagensURI, setImagesURI] = useState<string[]>([]);
-   
+    const [image, setImage] = useState(null);
+    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
     const [geometria, setGeometria] = useState({latitude:0, longitude:0})
     const latitude = geometria.latitude
     const longitude= geometria.longitude
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
+    const [informacaoDenunciado, setInformacao] = useState('');
+    
   
     const showDatePicker = () => {
       setDatePickerVisible(true);
@@ -52,9 +55,9 @@ const Denunciar : React.FC = () => {
        setGeometria(event.nativeEvent.coordinate)
     }
     async function handleNextStep (){
-        console.log(nome, titulo,descricao,numero, rua,complemento,horarioAbordagem, geometria)
+        console.log(titulo,descricao,numero, rua, horarioAbordagem, geometria, informacaoDenunciado)
         
-        await api.post('/denuncia', {descricao, horarioAbordagem, rua, numero, complemento, longitude, latitude  }).then((response) =>
+        await api.post('/denuncia', {informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           
@@ -65,6 +68,36 @@ const Denunciar : React.FC = () => {
         
         
     }
+     
+    useEffect(()=>{
+        (async () => {
+            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
+            setHasGalleryPermission(galleryStatus.status === 'granted')
+        })();
+    },[]);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync(
+           
+           
+            
+
+        );
+        
+        // const caminho = result["uri"];
+        // const lugar = caminho.toISOString()
+        console.log(result)
+     
+
+        if(!result.cancelled){
+            setImage(result["uri"])
+        }
+    }
+
+    if (hasGalleryPermission === false){
+        return <Text>Acesso interno negado</Text>
+    }
+    
     async function selectImagens() {
        const {status} = await ImagePicker.requestCameraPermissionsAsync();
        if(status != 'granted'){
@@ -93,9 +126,10 @@ const Denunciar : React.FC = () => {
 
     return (
         <ScrollView style={styles.container}>
-             
-            <Text  style={styles.title}>Nome do suspeito</Text>
-            <TextInput  style={styles.input} />
+            
+            <Text  style={styles.title}>Informações dos possiveis suspeitos</Text>
+            <TextInput placeholder='Ex: descrição física, onde reside, nome' multiline style={[styles.input,{height:110}]} 
+            value={informacaoDenunciado} onChangeText={setInformacao}/>
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
             <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
@@ -107,9 +141,6 @@ const Denunciar : React.FC = () => {
             <Text  style={styles.title}>Numero</Text>
             <TextInput style={styles.input} keyboardType="numeric" value={numero} onChangeText={setNumero}/>
 
-            <Text style={styles.title}>Complemento</Text>
-            <TextInput style={styles.input}  value={complemento} onChangeText={setComplemento}/>
-            
             <Text style={styles.title}>Horário de abordagem</Text>
 
             <View style={styles.hora}>
@@ -170,12 +201,21 @@ const Denunciar : React.FC = () => {
 
 
             <Text  style={styles.title}>Foto</Text>
+            <View style={styles.hora}>
+                <Button title='selecione imagem' onPress={() => pickImage()}/>
+
+            </View>
+            
+
+            
                      
-            <TouchableOpacity style={styles.imageInput} onPress={selectImagens}>
+            {/* <TouchableOpacity style={styles.imageInput} onPress={() => pickImage()}>
                 <Feather name="plus" size={24}/>
 
-            </TouchableOpacity>
-            
+            </TouchableOpacity> */}
+            {image && <Image source={{uri : image}}/>}
+
+
 
            
            
@@ -213,6 +253,27 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+    },
+    nome : {
+        flex: 1,
+    height: 47,
+    paddingHorizontal: 20,
+   
+    borderTopLeftRadius: 5,
+    borderBottomLeftRadius: 5,
+    borderRightWidth: 1,
+    borderRightColor: '#EBEBEB',
+    color: '#666666'
+    },
+    addButton :{
+        backgroundColor: '#FFF',
+        height: 47,
+        paddingHorizontal: 13,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderTopRightRadius: 5,
+        borderBottomRightRadius: 5,
+
     },
     hora: {
         flex: 1,

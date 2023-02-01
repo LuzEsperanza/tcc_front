@@ -21,7 +21,7 @@ const Login : React.FC = () => {
       
                
         })
-        
+        console.log(denunciante)
         
         navigation.navigate('Principal', denunciante)
         
