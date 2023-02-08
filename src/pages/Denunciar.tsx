@@ -8,13 +8,11 @@ import mapMaker from '../images/marcador.svg'
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import {NomeInput} from '../components/NomeInput';
-import Icon from 'react-native-vector-icons/Feather';
-
+import {useMyContext} from '../context/AuthProvider';
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
-    const anonima = route.params;
+    const {denunciante} = useMyContext();
    
     const navigation = useNavigation();
     const [titulo, setTitulo] = useState('');
@@ -31,6 +29,12 @@ const Denunciar : React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [informacaoDenunciado, setInformacao] = useState('');
+
+    const options = [
+        {text: 'Abandono de animais', id: 1},
+        {text: 'Abandono de animais', id: 2}
+
+    ]
     
   
     const showDatePicker = () => {
@@ -55,9 +59,10 @@ const Denunciar : React.FC = () => {
        setGeometria(event.nativeEvent.coordinate)
     }
     async function handleNextStep (){
-        console.log(titulo,descricao,numero, rua, horarioAbordagem, geometria, informacaoDenunciado)
+       const autor = denunciante.denuncianteID;
+        console.log(titulo,descricao,numero, rua, horarioAbordagem, autor, informacaoDenunciado)
         
-        await api.post('/denuncia', {informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+        await api.post('/denuncia', {autor, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           

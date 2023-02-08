@@ -2,28 +2,19 @@ import React, {useState} from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 import api from '../services/api'
-
+import {useMyContext} from '../context/AuthProvider'
 
 
 const Login : React.FC = () => {
     const [email, setEmail] = useState(String);
     const [senha, setSenha] = useState(String);
     const navigation = useNavigation();
-    
+    const {logar} = useMyContext();
+
     async function handleNextStep (){
-        const data = new FormData();
-        data.append('email', email);
-        data.append('senha', senha);
         
-        const denunciante = await api.post('/denunciante/login', {email, senha}).then((response) =>
-        {
-           return response.data.denuncianteID
-      
-               
-        })
-        console.log(denunciante)
-        
-        navigation.navigate('Principal', denunciante)
+        await logar(email, senha);
+        navigation.navigate('Principal');
         
     }
     return (

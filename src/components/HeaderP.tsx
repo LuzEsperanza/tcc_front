@@ -4,6 +4,7 @@ import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
 import {useFocusEffect, useRoute}  from '@react-navigation/native';
+import {useMyContext} from '../context/AuthProvider';
 
 interface HeaderProps {
     title:string;
@@ -13,53 +14,38 @@ interface HeaderProps {
 
 
 const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
+
     const navigation = useNavigation();
-    const route = useRoute();
-    const denunciante = route.params;
-    const id = JSON.stringify(denunciante)
-    const denuncianteID= parseInt(id)
+    const {denunciante} = useMyContext();
+
     function handleNextStep (){
         
-
-        navigation.navigate('Denunciar')
+        navigation.navigate('Denunciar', {id:denunciante.denuncianteId});
     }
 
     function usuario (){
-        const route = useRoute();
-        const denunciante = route.params;
-       
-        navigation.navigate('Usuario')
+               
+        navigation.navigate('Usuario', {id:denunciante.denuncianteId});
     }
 
     
    
     return (
-       <View style={styles.container}>
-          <Pressable onPress={navigation.goBack}>
-            <Feather name="arrow-left" size={24} color="#15b6d5"/>
-          </Pressable>
-            
-       
-        
-        <Pressable  style={styles.denunciar} onPress={()=>handleNextStep()}>
+        <View style={styles.container}>
+            <Pressable onPress={navigation.goBack}>
+                <Feather name="arrow-left" size={24} color="#15b6d5"/>
+            </Pressable>         
                
+            <Pressable  style={styles.denunciar} onPress={()=>handleNextStep()}>
                 <Text style={styles.title}>Denunciar</Text>
             </Pressable>
         
-        {showX ? (
+           
             <Pressable onPress={()=>usuario()}>
                 <Feather name="user" size={24} color="#000000"/>
-
             </Pressable>
-            
-        
-        ):(
-            <View/>
-        )
-        
-        }
-        
-       </View>
+     
+        </View>
     );
 }
 const styles = StyleSheet.create({

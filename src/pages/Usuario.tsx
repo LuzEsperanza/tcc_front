@@ -1,36 +1,31 @@
 import React, {useEffect,useState} from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
-
+import {useMyContext} from '../context/AuthProvider';
 import api from '../services/api'
 import AppLoading from 'expo-app-loading';
 interface ParamsId{
    id: number;
 }
 
-interface Denunciante{
-    DenuncianteID:number;
-    nome:string;
-    senha:string;
-    email:string
-}
+
 
 const Usuario : React.FC = () => {
     const route = useRoute();
-    const paramsId = route.params as ParamsId;
+    const {denunciante} = useMyContext();
+    const [email, setEmail] = useState(String);
+    const [senha, setSenha] = useState(String);
+    const [nome, setNome] = useState(String);
     
-    const [denunciante, setDenunciante] = useState<Denunciante>();
-    useEffect(()=>{
-        api.get('/denunciante/${1}').then(response=>{
-            setDenunciante(response.data)
-            console.log(denunciante)
-        });
-    },[paramsId.id]);
-    if(!denunciante){
-        return <AppLoading/>
-    }
     const navigation = useNavigation();
-    function handleNextStep (){
+   
+
+       
+    async function Atualizar (){
+        const consulta = '/denunciante/';
+        const teste = consulta.concat(denunciante.denuncianteID.toString())
+        await api.patch(teste, {nome, email, senha});
+
         navigation.navigate('Principal')
     }
     return (
@@ -39,27 +34,29 @@ const Usuario : React.FC = () => {
                 <View  >
                     <Image  style={styles.tinyLogo} source={require('../images/images.png')}/>
 
-                    <TextInput style={styles.input} placeholder="Email" keyboardType="email-address" autoComplete='email'>
-                        {denunciante.email}    
-                    </TextInput>    
+                    <TextInput 
+                        style={styles.input} 
+                        placeholder="Email"
+                        keyboardType="email-address"
+                        onChangeText={setEmail}/>
            
-                    <TextInput placeholder="Nome" style={styles.input} autoComplete='name'>
-                        {denunciante.nome}
-                    </TextInput>
-            
-                   <TextInput style={styles.input} placeholder="Senha" secureTextEntry={true}/>
-                        {denunciante.senha}
-                   <View style={styles.button}>
+                    <TextInput 
+                        placeholder="Nome" 
+                        style={styles.input}
+                        onChangeText={setNome}/>
 
-                        <Pressable  style={styles.deletar} onPress={()=>handleNextStep()}>
-                            <Text style={styles.buttonText}>Deletar</Text>
-                        </Pressable>
+                    <TextInput
+                        style={styles.input} 
+                        placeholder="Senha" 
+                        secureTextEntry={true}
+                        onChangeText={setSenha}
+                    />                   
+                   
+                    <Pressable  style={styles.atualizar} onPress={()=>Atualizar()}>
+                        <Text style={styles.text}>Atualizar</Text>
+                    </Pressable>
 
-                        <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
-                            <Text style={styles.text}>Atualizar</Text>
-                        </Pressable>
-
-                    </View>
+                    
             
                 </View>           
             
@@ -93,43 +90,23 @@ const styles = StyleSheet.create({
         borderColor: '#000000',
     
     },
-    button :{
-        height: 110,
-        margin: 12,
-        width: '90%',
-        padding: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 1,
-        paddingHorizontal: 2,
-        marginBottom: 16,
-        textAlignVertical: 'top'
-    },
-    deletar: {
-        height: 50,
-        width: '40%',
-        borderRadius: 10,
-        backgroundColor: '#f9fafc',
+    
+    atualizar: {
+        backgroundColor: '#000000',
         borderWidth: 4,
         borderColor: '#000000',
-        justifyContent:'center',
-        alignItems: 'center',
-        marginBottom: 10   
-        
-        
-    },
-   
-    atualizar: {
-        height: 50,
-        width: '40%',
+        paddingTop: 6,
+        paddingBottom: 6,
         borderRadius: 10,
-        backgroundColor: '#808080',
-        borderWidth: 4,
-        borderColor: '#808080',
-        justifyContent:'center',
         alignItems: 'center',
-        marginBottom: 10
+        marginTop : 9,
+        
+        margin: 20,
+        width: 200,
+        justifyContent: 'center',
+        padding: 10,
+        marginLeft: 80,
+        marginBottom: 80
         
     },
     buttonText : {

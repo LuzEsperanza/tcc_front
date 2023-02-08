@@ -3,7 +3,8 @@ import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
 import {RectButton, ScrollView, TextInput} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useFocusEffect, useRoute}  from '@react-navigation/native';
-import api from '../services/api'
+import api from '../services/api';
+import {useMyContext} from '../context/AuthProvider';
 
 
 interface Denuncia{
@@ -26,18 +27,17 @@ const Principal : React.FC = () => {
     const route = useRoute();
     
     const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
-    const denunciante = route.params;
+    const {denunciante} = useMyContext();
    
-   console.log(denunciante)
+   console.log(denunciante.denuncianteID)
     useEffect(()=>{
-       
        
         
         const consulta = '/denuncia/';
-        const teste = consulta.concat(denunciante.toString())
+        const teste = consulta.concat(denunciante.denuncianteID.toString())
 
         // console.log(denunciante)
-        console.log(teste)
+        // console.log(teste)
         api.get(teste).then(response=>{
             setDenuncias(response.data)
             console.log(denuncias)
