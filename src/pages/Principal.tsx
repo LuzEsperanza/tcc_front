@@ -30,19 +30,19 @@ const Principal : React.FC = () => {
     const {denunciante} = useMyContext();
    
    console.log(denunciante.denuncianteID)
-    useEffect(()=>{
+    // useEffect(()=>{
        
         
-        const consulta = '/denuncia/';
-        const teste = consulta.concat(denunciante.denuncianteID.toString())
+    //     const consulta = '/denuncia/';
+    //     const teste = consulta.concat(denunciante.denuncianteID.toString())
 
-        // console.log(denunciante)
-        // console.log(teste)
-        api.get(teste).then(response=>{
-            setDenuncias(response.data)
-            console.log(denuncias)
-        });
-    }, [denuncias]);
+    //     // console.log(denunciante)
+    //     console.log(teste)
+    //     api.get(teste).then(response=>{
+    //         setDenuncias(response.data)
+    //         console.log(denuncias)
+    //     });
+    // }, [denuncias]);
     
     return (
         <ScrollView >

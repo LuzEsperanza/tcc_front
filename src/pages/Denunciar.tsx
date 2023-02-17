@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Dimensions, Linking, Button, Image} from 'react-native';
+import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Button, Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
-import { State, TouchableOpacity } from 'react-native-gesture-handler';
-import {Feather} from '@expo/vector-icons';
-import MapView, {Marker, Callout, PROVIDER_GOOGLE, MapEvent}  from 'react-native-maps';
+import MapView, {Marker, MapEvent}  from 'react-native-maps';
 import mapMaker from '../images/marcador.svg'
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
+import CheckBox from '../components/CheckdBox';
+
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
@@ -32,7 +32,9 @@ const Denunciar : React.FC = () => {
 
     const options = [
         {text: 'Abandono de animais', id: 1},
-        {text: 'Abandono de animais', id: 2}
+        {text: 'Transporte ilegal', id: 2},
+        {text: 'Comércio ilegal', id: 3},
+        {text: 'Caça ilegal', id: 4},
 
     ]
     
@@ -59,10 +61,10 @@ const Denunciar : React.FC = () => {
        setGeometria(event.nativeEvent.coordinate)
     }
     async function handleNextStep (){
-       const autor = denunciante.denuncianteID;
-        console.log(titulo,descricao,numero, rua, horarioAbordagem, autor, informacaoDenunciado)
+       const identificado = denunciante.denuncianteID;
+        console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado)
         
-        await api.post('/denuncia', {autor, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+        await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           
@@ -72,62 +74,23 @@ const Denunciar : React.FC = () => {
         // navigation.navigate('Principal')
         
         
-    }
-     
-    useEffect(()=>{
-        (async () => {
-            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync();
-            setHasGalleryPermission(galleryStatus.status === 'granted')
-        })();
-    },[]);
-
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync(
-           
-           
-            
-
-        );
-        
-        // const caminho = result["uri"];
-        // const lugar = caminho.toISOString()
-        console.log(result)
-     
-
-        if(!result.cancelled){
-            setImage(result["uri"])
-        }
-    }
-
-    if (hasGalleryPermission === false){
-        return <Text>Acesso interno negado</Text>
-    }
+    }    
     
-    async function selectImagens() {
-       const {status} = await ImagePicker.requestCameraPermissionsAsync();
-       if(status != 'granted'){
-        alert('permita acesso as suas fotos')
-        return
-       }
-       const result = await ImagePicker.launchImageLibraryAsync({
-        allowsEditing:true,
-        quality: 1,
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-       })
-       console.log(result);
-
-        if (result.cancelled) {
-          return;
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.canceled) {
+          setImage(result.assets[0].uri);
         }
-        
-    //    const { uri } = result; 
-
-        // setImagesURI([...imagensURI, uri]);
-
-
-        
-
-    }
+      };
 
     return (
         <ScrollView style={styles.container}>
@@ -138,6 +101,7 @@ const Denunciar : React.FC = () => {
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
             <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
+            {/* <CheckBox options={options} onChange={op => alert(op)}/> */}
 
             <Text style={styles.local}>Local do ocorrido</Text>
             <Text  style={styles.title} >Rua</Text>
@@ -206,10 +170,12 @@ const Denunciar : React.FC = () => {
 
 
             <Text  style={styles.title}>Foto</Text>
-            <View style={styles.hora}>
+            <Button title="Pick an image from camera roll" onPress={pickImage} />
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            {/* <View style={styles.hora}>
                 <Button title='selecione imagem' onPress={() => pickImage()}/>
 
-            </View>
+            </View> */}
             
 
             

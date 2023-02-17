@@ -18,7 +18,7 @@ const Cadastro : React.FC = () => {
            
            
         })
-        navigation.navigate('Denunciar')
+        navigation.navigate('Login')
     }
 
     return (
