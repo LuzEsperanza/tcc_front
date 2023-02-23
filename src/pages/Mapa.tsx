@@ -1,9 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text } from 'react-native';
 import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 import mapMarker from '../images/marcador.svg'
 
 const Mapa : React.FC = () => {
+    const navigation = useNavigation();
+    function handlerDenunciar(){
+        navigation.navigate()
+    }
     return(
         <View style={styles.container}>
             <MapView 
@@ -16,7 +21,8 @@ const Mapa : React.FC = () => {
                         latitudeDelta: 0.008,
                         longitudeDelta: 0.08,
                     }
-                }>
+                }
+                >
                     <Marker
                         icon= {mapMarker}
                         coordinate = {
@@ -24,10 +30,11 @@ const Mapa : React.FC = () => {
                                 latitude:-6.5205485,
                                 longitude:-38.4057993
                             }
-                        }>
+                        }
+                        calloutAnchor={{x:2.7, y:0.8}}>
                         <Callout
                             tooltip={true}
-                            onPress={()=>{}}>
+                            onPress={handlerDenunciar}>
                                 <View style={styles.call}>
                                     <Text style={styles.texto}>Localização</Text>
                                 </View>
@@ -57,7 +64,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
 
     },
-    texto : {}
+    texto : {
+        color: '#8889a5',
+        fontSize: 14,
+        fontFamily: 'Nunito_700Bold'
+    }
     
  })
 export default Mapa;
