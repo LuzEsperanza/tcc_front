@@ -3,6 +3,7 @@ import { createNativeStackNavigator} from '@react-navigation/native-stack';
 import Denunciar from '../pages/Denunciar';
 import Usuario from '../pages/Usuario';
 import Principal from '../pages/Principal';
+import Check from '../pages/Check';
 import Header from '../components/Header';
 import HeaderP from '../components/HeaderP'
 
@@ -40,6 +41,16 @@ const RoutesPrivado : React.FC = () => {
 
                 }}
                 />
+            <Screen 
+                name="Check"
+                component={Check}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Check'/>
+
+                }}
+                />
+            
                      
         </Navigator>
 

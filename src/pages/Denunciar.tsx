@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Button, Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
 import MapView, {Marker, MapEvent}  from 'react-native-maps';
-import mapMaker from '../images/marcador.svg'
+import mapMaker from '../images/marcador.svg';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
@@ -19,10 +19,8 @@ const Denunciar : React.FC = () => {
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
-     
     const [imagensURI, setImagesURI] = useState<string[]>([]);
     const [image, setImage] = useState(null);
-    const [hasGalleryPermission, setHasGalleryPermission] = useState(null);
     const [geometria, setGeometria] = useState({latitude:0, longitude:0})
     const latitude = geometria.latitude
     const longitude= geometria.longitude
@@ -90,7 +88,9 @@ const Denunciar : React.FC = () => {
         if (!result.canceled) {
           setImage(result.assets[0].uri);
         }
-      };
+        
+
+    };
 
     return (
         <ScrollView style={styles.container}>
@@ -101,7 +101,7 @@ const Denunciar : React.FC = () => {
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
             <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
-            {/* <CheckBox options={options} onChange={op => alert(op)}/> */}
+            <CheckBox options={options} onChange={op => alert(op)}/>
 
             <Text style={styles.local}>Local do ocorrido</Text>
             <Text  style={styles.title} >Rua</Text>

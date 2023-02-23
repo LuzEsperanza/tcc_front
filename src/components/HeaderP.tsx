@@ -20,12 +20,12 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
 
     function handleNextStep (){
         
-        navigation.navigate('Denunciar', {id:denunciante.denuncianteId});
+        navigation.navigate('Denunciar');
     }
 
     function usuario (){
                
-        navigation.navigate('Usuario', {id:denunciante.denuncianteId});
+        navigation.navigate('Usuario');
     }
 
     

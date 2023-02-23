@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, StyleSheet, Text, Pressable} from 'react-native';
-import {Feather} from '@expo/vector-icons';
-import {useNavigation} from '@react-navigation/native'
+import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native';
+import { Ionicons} from '@expo/vector-icons';
+import {useNavigation} from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 interface HeaderProps {
     title:string;
@@ -17,12 +18,11 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
    
     return (
        <View style={styles.container}>
-          <Pressable onPress={navigation.goBack}>
-            <Feather name="arrow-left" size={24} color="#15b6d5"/>
-       
-          </Pressable>
+          <TouchableOpacity onPress={navigation.goBack}>
+            <Icon name="rocket" size={24} color="black" />                  
+          </TouchableOpacity>
            
-        <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{title}</Text>
        <View/>
         
        </View>

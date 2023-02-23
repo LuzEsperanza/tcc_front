@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity} from 'react-native';
-import Icon from 'react-native-vector-icons/dist/MaterialCommunityIcons';
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 const CheckBox = ({options = [], onChange})=>{
     const [selected, setSelected] = useState([]);
@@ -32,14 +32,16 @@ const CheckBox = ({options = [], onChange})=>{
                        onPress={() => toggle(op?.id)}
                     >
                         {
-                            selected.findIndex(i=> i === op.id) !== -1 ?(
-                                <Icon name="check-bold" color={'#3EBD93'} size={16} />
+                            selected.findIndex(i=> i === op.id) !== -1 ? (
+                                // <Icon name="check-bold" size={16} color="#3EBD93" />
+                                // <Ionicons name="check" color={'#3EBD93'} size={16} />
+                                <Text>+</Text>
 
-                            ):null 
+                            ) : null 
                         }
                         
                     </TouchableOpacity>
-                    <Text>{op?.text}</Text>
+                    <Text style={styles.optext}>{op?.text}</Text>
                 </View>
                
             ))}           
@@ -73,7 +75,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     color: '#555',
     fontSize: 16,
-    fontWeight: 600
+    
   }
  })
 export default CheckBox;

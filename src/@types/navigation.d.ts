@@ -6,7 +6,8 @@ export declare global {
         Denunciar: {id: number};
         Inicial: undefined;
         Usuario:  {id: number};
-        Login: {numero: number}
+        Login: {numero: number};
+        Check: {id: number}
         
       }
     }
