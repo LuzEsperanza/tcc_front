@@ -2,7 +2,8 @@ import React from 'react';
 import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native';
 import { Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {Entypo} from '@expo/vector-icons'
 
 interface HeaderProps {
     title:string;
@@ -19,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
     return (
        <View style={styles.container}>
           <TouchableOpacity onPress={navigation.goBack}>
-            <Icon name="rocket" size={24} color="black" />                  
+            <Entypo name='feather' size={24} color="black"/>                 
           </TouchableOpacity>
            
           <Text style={styles.title}>{title}</Text>

@@ -1,11 +1,14 @@
-import React, {useState} from 'react';
-import { View, StyleSheet } from 'react-native';
-import MapView from 'react-native-maps';
+import React from 'react';
+import { View, StyleSheet, Dimensions, Text } from 'react-native';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import mapMarker from '../images/marcador.svg'
 
 const Mapa : React.FC = () => {
     return(
         <View style={styles.container}>
             <MapView 
+                style={styles.map}
+                provider={PROVIDER_GOOGLE}
                 initialRegion= {
                     {
                         latitude:-6.5205485,
@@ -14,6 +17,23 @@ const Mapa : React.FC = () => {
                         longitudeDelta: 0.08,
                     }
                 }>
+                    <Marker
+                        icon= {mapMarker}
+                        coordinate = {
+                            {
+                                latitude:-6.5205485,
+                                longitude:-38.4057993
+                            }
+                        }>
+                        <Callout
+                            tooltip={true}
+                            onPress={()=>{}}>
+                                <View style={styles.call}>
+                                    <Text style={styles.texto}>Localização</Text>
+                                </View>
+
+                        </Callout>
+                    </Marker>
 
             </MapView>
         </View>
@@ -21,22 +41,23 @@ const Mapa : React.FC = () => {
 }
 const styles = StyleSheet.create({
     container : {
-        padding: 24,
-        backgroundColor: '#f9fafc',
-        borderBottomWidth: 1,
-        borderColor: '#dde3f0',
-        paddingTop: 44,
-
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center'
+        flex: 1,
     },
-    title : {
-        
-        color: '#8fa7b3',
-        fontSize: 16,
+    map: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
 
-    }
+    },
+    call: {
+        width: 168,
+        height: 46,
+        paddingHorizontal: 16,
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        borderRadius: 16,
+        justifyContent: 'center'
+
+    },
+    texto : {}
     
  })
 export default Mapa;
