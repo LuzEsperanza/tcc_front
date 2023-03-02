@@ -7,7 +7,8 @@ export declare global {
         Inicial: undefined;
         Usuario:  {id: number};
         Login: {numero: number};
-        Check: {id: number}
+        Check: {id: number};
+        Mapa: {id:number};
         
       }
     }

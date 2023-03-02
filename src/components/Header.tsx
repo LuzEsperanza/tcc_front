@@ -1,27 +1,22 @@
 import React from 'react';
 import { View, StyleSheet, Text, Pressable, TouchableOpacity} from 'react-native';
-import { Ionicons} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Entypo} from '@expo/vector-icons'
+import {Entypo} from '@expo/vector-icons';
+import {Feather} from '@expo/vector-icons';
 
 interface HeaderProps {
     title:string;
     showX?:boolean;
 }
 
-
-
 const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
-    const navigation = useNavigation();
-
-    
+    const navigation = useNavigation();   
    
     return (
        <View style={styles.container}>
-          <TouchableOpacity onPress={navigation.goBack}>
-            <Entypo name='feather' size={24} color="black"/>                 
-          </TouchableOpacity>
+          <Pressable onPress={navigation.goBack}>
+            <Feather name="arrow-left" size={24} color="#15b6d5"/>             
+          </Pressable>
            
           <Text style={styles.title}>{title}</Text>
        <View/>

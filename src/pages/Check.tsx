@@ -11,19 +11,19 @@ import Constants from 'expo-constants';
 
 const data = [
 
-    { id: 1, txt: 'React Native', isChecked: false },
+    { id: 1, txt: 'Abandono de animais', isChecked: false },
 
-    { id: 2, txt: 'Javascript', isChecked: false },
+    { id: 2, txt: 'Transporte ilegal', isChecked: false },
 
-    { id: 3, txt: 'Laravel', isChecked: false },
+    { id: 3, txt: 'Comércio ilegal', isChecked: false },
 
-    { id: 4, txt: 'PHP', isChecked: false },
+    { id: 4, txt: 'Caça ilegal', isChecked: false },
 
-    { id: 5, txt: 'jQuery', isChecked: false },
+    { id: 5, txt: 'Maus tratos', isChecked: false },
 
-    { id: 6, txt: 'Boostrap', isChecked: false },
+    { id: 6, txt: 'Pesca predatória', isChecked: false },
 
-    { id: 7, txt: 'HTML', isChecked: false },
+    { id: 7, txt: 'Queimadas', isChecked: false },
 
 ];
 

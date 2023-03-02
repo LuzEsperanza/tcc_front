@@ -1,74 +1,86 @@
-import React from 'react';
-import { View, StyleSheet, Dimensions, Text } from 'react-native';
-import MapView, {Callout, Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import React , {useState} from 'react';
+import { View, StyleSheet, Dimensions, Text, Pressable } from 'react-native';
+import MapView, {Callout, Marker, PROVIDER_GOOGLE, MapPressEvent} from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import mapMarker from '../images/marcador.svg'
+import { RectButton } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
 
 const Mapa : React.FC = () => {
     const navigation = useNavigation();
+    const [geometria, setGeometria] = useState({latitude:0, longitude:0});
+    const [position, setPosition] = useState({
+        latitude: -6.886532,
+        longitude: -38.563994,
+        latitudeDelta: 0.0010,
+        longitudeDelta: 0.0010,
+    });
+    
     function handlerDenunciar(){
-        navigation.navigate()
+        
+        navigation.navigate('Denunciar')
     }
+
+    function handleSelectMapPosition(event:MapPressEvent){
+        setGeometria(event.nativeEvent.coordinate)
+     }
+    
     return(
         <View style={styles.container}>
-            <MapView 
+            <MapView
                 style={styles.map}
-                provider={PROVIDER_GOOGLE}
-                initialRegion= {
-                    {
-                        latitude:-6.5205485,
-                        longitude:-38.4155765,
-                        latitudeDelta: 0.008,
-                        longitudeDelta: 0.08,
-                    }
-                }
-                >
-                    <Marker
-                        icon= {mapMarker}
-                        coordinate = {
-                            {
-                                latitude:-6.5205485,
-                                longitude:-38.4057993
-                            }
-                        }
-                        calloutAnchor={{x:2.7, y:0.8}}>
-                        <Callout
-                            tooltip={true}
-                            onPress={handlerDenunciar}>
-                                <View style={styles.call}>
-                                    <Text style={styles.texto}>Localização</Text>
-                                </View>
-
-                        </Callout>
-                    </Marker>
+                region={position}
+                onPress={e =>
+                    setPosition({
+                        ...position,
+                        latitude: e.nativeEvent.coordinate.latitude,
+                        longitude: e.nativeEvent.coordinate.longitude,
+                    })
+                }>
+                <Marker
+                    coordinate={position}
+                    title={'Marcador'}
+                    description={'Testando o marcador no mapa'}
+                />
+                
 
             </MapView>
+            
+            <Pressable style={styles.button} onPress={handlerDenunciar}>
+                <Text style={styles.texto}>Próximo</Text>
+            </Pressable>      
+             
+           
         </View>
     )
 }
 const styles = StyleSheet.create({
     container : {
         flex: 1,
+        position: 'relative'
     },
     map: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height
 
-    },
-    call: {
-        width: 168,
-        height: 46,
-        paddingHorizontal: 16,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-        borderRadius: 16,
-        justifyContent: 'center'
+    },   
+    button : {
+        backgroundColor: '#15c3d6',
+        borderRadius: 28,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 56,
 
+        position: 'absolute',
+        left: 24,
+        right: 24,
+        bottom: 40,      
     },
     texto : {
-        color: '#8889a5',
-        fontSize: 14,
-        fontFamily: 'Nunito_700Bold'
-    }
+        color:'#fff',
+        fontSize: 16,
+        fontFamily: 'Roboto',
+    },
     
  })
 export default Mapa;

@@ -20,7 +20,7 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
 
     function handleNextStep (){
         
-        navigation.navigate('Denunciar');
+        navigation.navigate('Mapa');
     }
 
     function usuario (){

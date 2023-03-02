@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Button, Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
-import MapView, {Marker, MapEvent}  from 'react-native-maps';
+import MapView, {Marker, MapPressEvent}  from 'react-native-maps';
 import mapMaker from '../images/marcador.svg';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
-import CheckBox from '../components/CheckdBox';
 
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
+    
     const {denunciante} = useMyContext();
    
     const navigation = useNavigation();
@@ -28,15 +28,7 @@ const Denunciar : React.FC = () => {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [informacaoDenunciado, setInformacao] = useState('');
 
-    const options = [
-        {text: 'Abandono de animais', id: 1},
-        {text: 'Transporte ilegal', id: 2},
-        {text: 'Comércio ilegal', id: 3},
-        {text: 'Caça ilegal', id: 4},
-
-    ]
     
-  
     const showDatePicker = () => {
       setDatePickerVisible(true);
     };
@@ -55,7 +47,7 @@ const Denunciar : React.FC = () => {
     let horarioAbordagem = data.substring(11,19)
    
 
-    function handleSelectMapPosition(event:MapEvent){
+    function handleSelectMapPosition(event:MapPressEvent){
        setGeometria(event.nativeEvent.coordinate)
     }
     async function handleNextStep (){
@@ -89,6 +81,7 @@ const Denunciar : React.FC = () => {
           setImage(result.assets[0].uri);
         }
         
+        
 
     };
 
@@ -101,7 +94,7 @@ const Denunciar : React.FC = () => {
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
             <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
-            <CheckBox options={options} onChange={op => alert(op)}/>
+            
 
             <Text style={styles.local}>Local do ocorrido</Text>
             <Text  style={styles.title} >Rua</Text>
@@ -172,28 +165,7 @@ const Denunciar : React.FC = () => {
             <Text  style={styles.title}>Foto</Text>
             <Button title="Pick an image from camera roll" onPress={pickImage} />
       {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
-            {/* <View style={styles.hora}>
-                <Button title='selecione imagem' onPress={() => pickImage()}/>
-
-            </View> */}
             
-
-            
-                     
-            {/* <TouchableOpacity style={styles.imageInput} onPress={() => pickImage()}>
-                <Feather name="plus" size={24}/>
-
-            </TouchableOpacity> */}
-            {image && <Image source={{uri : image}}/>}
-
-
-
-           
-           
-
-
-            
-           
             <Pressable  style={styles.cadastro} onPress={handleNextStep}>
                 <Text style={styles.buttonText}>Enviar</Text>
             </Pressable>
