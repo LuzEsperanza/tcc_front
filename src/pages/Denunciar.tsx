@@ -8,6 +8,17 @@ import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
 
+interface Positions {
+    latitude:number;
+    logitude:number
+
+}
+
+interface ParamsPositions{
+    position : Positions;
+   
+}
+
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
@@ -15,6 +26,9 @@ const Denunciar : React.FC = () => {
     const {denunciante} = useMyContext();
    
     const navigation = useNavigation();
+
+    const paramsPositiom = route.params as ParamsPositions;
+    console.log(paramsPositiom.position)
     const [titulo, setTitulo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
@@ -93,8 +107,7 @@ const Denunciar : React.FC = () => {
             value={informacaoDenunciado} onChangeText={setInformacao}/>
 
             <Text  style={styles.title}>Tipo de atividade inlicita</Text>
-            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>
-            
+            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>            
 
             <Text style={styles.local}>Local do ocorrido</Text>
             <Text  style={styles.title} >Rua</Text>
@@ -109,8 +122,6 @@ const Denunciar : React.FC = () => {
                 < Button  title="Selecione um horário" onPress={showDatePicker} />
 
             </View>         
-               
-            
             <DateTimePickerModal
 
               style={styles.title}
@@ -121,8 +132,7 @@ const Denunciar : React.FC = () => {
               locale="en_GB"
               onConfirm={handleConfirm}
               onCancel={hideDatePicker}
-            />        
-     
+            />   
               
             <Text  style={styles.title}>Descrição</Text>
             <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
@@ -158,20 +168,13 @@ const Denunciar : React.FC = () => {
             </MapView>
 
            </View>
-                    
-            
-
-
             <Text  style={styles.title}>Foto</Text>
             <Button title="Pick an image from camera roll" onPress={pickImage} />
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             
             <Pressable  style={styles.cadastro} onPress={handleNextStep}>
                 <Text style={styles.buttonText}>Enviar</Text>
             </Pressable>
-
-
-       
 
         </ScrollView>
       
@@ -199,14 +202,13 @@ const styles = StyleSheet.create({
     },
     nome : {
         flex: 1,
-    height: 47,
-    paddingHorizontal: 20,
-   
-    borderTopLeftRadius: 5,
-    borderBottomLeftRadius: 5,
-    borderRightWidth: 1,
-    borderRightColor: '#EBEBEB',
-    color: '#666666'
+        height: 47,
+        paddingHorizontal: 20,
+        borderTopLeftRadius: 5,
+        borderBottomLeftRadius: 5,
+        borderRightWidth: 1,
+        borderRightColor: '#EBEBEB',
+        color: '#666666'
     },
     addButton :{
         backgroundColor: '#FFF',
@@ -221,7 +223,6 @@ const styles = StyleSheet.create({
     hora: {
         flex: 1,
         justifyContent: 'center',
-        // marginHorizontal: 16,
         width: "90%",
         height: 54,
        
@@ -246,48 +247,16 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 10,
         flexDirection: 'row',
-        // justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 18,
         paddingHorizontal: 24,
         marginBottom: 16,
         textAlignVertical: 'top'
-       
-    
-    },
-    caixa: {
-        height: 110,
-        
-        width: '90%',
-        borderWidth: 1.4,
-        padding: 10,
-        borderRadius: 10,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingVertical: 18,
-        paddingHorizontal: 24,
-        marginBottom: 16,
-        textAlignVertical: 'top'
-    },
-
-    imageInput: {
-        borderStyle: 'dashed',
-        borderWidth: 1.4,
-        borderRadios: 20,
-        height: 80,
-        width: 300,
-        justifyContent:'center',
-        alignItems: 'center',
-        marginBottom: 10
+  
     },
     mapStyle: {
         width: '100%',
         height: 150,
-        
-        
-        
-
     },
     mapContainer: {
         borderRadius: 20,
@@ -298,10 +267,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9fafc',
         height: 150,
         marginBottom: 10
-
     },
-    cadastro: {
-        
+    cadastro: {        
         backgroundColor: '#000000',
         borderWidth: 4,
         borderColor: '#000000',
@@ -310,14 +277,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         alignItems: 'center',
         marginTop : 9,
-        
         margin: 20,
         width: 200,
         justifyContent: 'center',
         padding: 10,
         marginLeft: 80,
-        marginBottom: 80
-        
+        marginBottom: 80        
     },
     buttonText : {
         fontFamily: 'Roboto',

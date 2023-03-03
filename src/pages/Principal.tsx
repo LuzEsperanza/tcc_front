@@ -39,8 +39,9 @@ const Principal : React.FC = () => {
     //     // console.log(denunciante)
     //     console.log(teste)
     //     api.get(teste).then(response=>{
-    //         setDenuncias(response.data)
     //         console.log(denuncias)
+    //         setDenuncias(response.data)
+            
     //     });
     // }, [denuncias]);
     

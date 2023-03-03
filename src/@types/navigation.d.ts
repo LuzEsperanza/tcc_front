@@ -3,7 +3,12 @@ export declare global {
       interface RootParamList {
         Principal: {numero: number};
         Cadastro: {numero: number};
-        Denunciar: {id: number};
+        Denunciar: {
+          position: {
+            latitude:number;
+            longitude:number;
+          }
+        };
         Inicial: undefined;
         Usuario:  {id: number};
         Login: {numero: number};

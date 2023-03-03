@@ -3,13 +3,31 @@ import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'r
 import {useNavigation}  from '@react-navigation/native';
 import api from '../services/api'
 import {useMyContext} from '../context/AuthProvider'
-
+import {Ionicons} from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Login : React.FC = () => {
     const [email, setEmail] = useState(String);
+    const [validEmail, setValidEmail] = useState(false);
     const [senha, setSenha] = useState(String);
+    
+    const [hidePass, setHidePass] = useState(true)
     const navigation = useNavigation();
     const {logar} = useMyContext();
+
+    const handleValidEmail = (text) => {
+        let re = /\S+@\S+\.\S+/;
+        setEmail(text)
+        if(re.test(text)){
+            setValidEmail(false)
+        }
+        else{
+            setValidEmail(true)
+        }
+
+    }
+    
 
     async function handleNextStep (){
         
@@ -19,25 +37,42 @@ const Login : React.FC = () => {
     }
     return (
         <ScrollView style={styles.container}>
-             
+            <View  style={styles.inputArea}>
+                <TextInput 
+                    style={styles.input} 
+                    placeholder="Email" 
+                    keyboardType="email-address" 
+                    autoComplete='email' 
+                    value={email}
+                    onChangeText={(text)=>handleValidEmail(text)}
+                />
+                <AntDesign name="user" size={24} color="black" />
             
-            <TextInput 
-            style={styles.input} 
-             placeholder="Email" 
-             keyboardType="email-address" 
-             autoComplete='email' 
-             value={email}
-             onChangeText={setEmail}
-             />
-           
-          
+            
 
+            </View>
+            {validEmail ? 
+            (<Text style={styles.textError}>Formato de email incorreto</Text>) 
+            : (<Text></Text>)}
+            <View style={styles.inputArea}>
+                <TextInput style={styles.input}
+                    placeholder="Senha" 
+                    secureTextEntry={hidePass} 
+                    value={senha}
+                    onChangeText={(text)=> setSenha(text)}
+                />
+               
+                <TouchableOpacity onPress={()=>setHidePass(!hidePass)}>
+                   {hidePass ? 
+                   <Ionicons  name="eye" color="black" size={25}/>
+                   :
+                   <Ionicons  name="eye-off" color="black" size={25}/>
+                   }
+                    
+                </TouchableOpacity>
+
+            </View>                   
             
-            <TextInput style={styles.input}
-             placeholder="Senha" secureTextEntry={true} 
-             value={senha}
-             onChangeText={setSenha}
-             />
            
             <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
                 <Text style={styles.text}>Enviar</Text>
@@ -58,22 +93,45 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         marginHorizontal: 12,
-        height: '100%'
+        height: '100%',
+        backgroundColor: '#F5F5F5',
         
     },
-    input: {
-        height: 40,
-        margin: 12,
+    inputArea: {
+        flexDirection: 'row',
         width: '90%',
-        borderWidth: 1,
-        padding: 10,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        height: 50,
+        alignItems: 'center',
+        marginTop: 25,
+        borderColor: '#121212',
+        borderWidth: 2,
+
+
+    },
+    input: {
+        height: 50,
+       
+        width: '85%',
+        
+        padding: 8,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#f9fafc',
-        borderColor: '#000000',
+        color: 'black',
+       
+        fontSize:18,
     
+    },
+    icon :{
+        width: '15%',
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+
+
     },
    
    
@@ -86,7 +144,7 @@ const styles = StyleSheet.create({
         paddingBottom: 6,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop : 9,
+        marginTop : 25,
         
         margin: 20,
         width: 200,
@@ -113,7 +171,14 @@ const styles = StyleSheet.create({
         height: 200,
         left: 100,
         marginTop: 10
-      },
+    },
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 13,
+        marginTop: 0.5,
+        color: '#8B0000'
+
+    }
     
  })
 

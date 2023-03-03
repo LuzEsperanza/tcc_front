@@ -17,7 +17,7 @@ const Mapa : React.FC = () => {
     });
     
     function handlerDenunciar(){
-        
+       
         navigation.navigate('Denunciar')
     }
 
