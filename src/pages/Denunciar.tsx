@@ -7,10 +7,13 @@ import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Positions {
     latitude:number;
-    logitude:number
+    longitude:number;
+    latitudeDelta:number;
+    longitudeDelta:number
 
 }
 
@@ -28,16 +31,15 @@ const Denunciar : React.FC = () => {
     const navigation = useNavigation();
 
     const paramsPositiom = route.params as ParamsPositions;
-    console.log(paramsPositiom.position)
     const [titulo, setTitulo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const [imagensURI, setImagesURI] = useState<string[]>([]);
     const [image, setImage] = useState(null);
-    const [geometria, setGeometria] = useState({latitude:0, longitude:0})
-    const latitude = geometria.latitude
-    const longitude= geometria.longitude
+    
+    const latitude = paramsPositiom.position.latitude
+    const longitude= paramsPositiom.position.longitude
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [informacaoDenunciado, setInformacao] = useState('');
@@ -59,14 +61,10 @@ const Denunciar : React.FC = () => {
         
     const data =selectedDate.toISOString()
     let horarioAbordagem = data.substring(11,19)
-   
 
-    function handleSelectMapPosition(event:MapPressEvent){
-       setGeometria(event.nativeEvent.coordinate)
-    }
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
-        console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado)
+        console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
         await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
@@ -137,37 +135,7 @@ const Denunciar : React.FC = () => {
             <Text  style={styles.title}>Descrição</Text>
             <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
            
-           <View style={styles.mapContainer}>
-           <MapView
-                 initialRegion={{
-                    latitude:-27.2092052,
-                    longitude:-49.6401092,
-                    latitudeDelta: 0.008,
-                    longitudeDelta: 0.008,
-                 }}
-                 pitchEnabled={false}
-                 scrollEnabled={false}
-                 rotateEnabled={false}
-                 style={styles.mapStyle}
-                 onPress={handleSelectMapPosition}
-                
-            >
-                {geometria.latitude != 0 && (
-                    <Marker
-                    icon={mapMaker}
-                    coordinate={{
-                       latitude:geometria.latitude,
-                       longitude:geometria.latitude,
-   
-                    }}
-                   />
-
-                )}
-               
-               
-            </MapView>
-
-           </View>
+           
             <Text  style={styles.title}>Foto</Text>
             <Button title="Pick an image from camera roll" onPress={pickImage} />
             {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
@@ -254,20 +222,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'top'
   
     },
-    mapStyle: {
-        width: '100%',
-        height: 150,
-    },
-    mapContainer: {
-        borderRadius: 20,
-        overflow: 'hidden',
-        borderWidth: 1.4,
-        borderColor: '#000000',
-        width: '90%',
-        backgroundColor: '#f9fafc',
-        height: 150,
-        marginBottom: 10
-    },
+   
     cadastro: {        
         backgroundColor: '#000000',
         borderWidth: 4,

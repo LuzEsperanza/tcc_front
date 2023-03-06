@@ -34,7 +34,7 @@ interface IContexto{
           email, senha
         }
         const response = await api.post('/denunciante/login', dados);
-        console.log(response)
+      
   
         const {denunciante, token} = response.data as ResponseData;
         console.log(denunciante.token);

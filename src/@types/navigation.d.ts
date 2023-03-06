@@ -7,6 +7,8 @@ export declare global {
           position: {
             latitude:number;
             longitude:number;
+            latitudeDelta:number;
+            longitudeDelta:number
           }
         };
         Inicial: undefined;

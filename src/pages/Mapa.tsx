@@ -5,9 +5,11 @@ import { useNavigation } from '@react-navigation/native';
 import mapMarker from '../images/marcador.svg'
 import { RectButton } from 'react-native-gesture-handler';
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 const Mapa : React.FC = () => {
     const navigation = useNavigation();
+    
     const [geometria, setGeometria] = useState({latitude:0, longitude:0});
     const [position, setPosition] = useState({
         latitude: -6.886532,
@@ -15,15 +17,15 @@ const Mapa : React.FC = () => {
         latitudeDelta: 0.0010,
         longitudeDelta: 0.0010,
     });
+
     
-    function handlerDenunciar(){
-       
-        navigation.navigate('Denunciar')
+    function handlerDenunciar(){      
+        navigation.navigate('Denunciar', {position})
     }
 
-    function handleSelectMapPosition(event:MapPressEvent){
-        setGeometria(event.nativeEvent.coordinate)
-     }
+    // function handleSelectMapPosition(event:MapPressEvent){
+    //     setGeometria(event.nativeEvent.coordinate)
+    //  }
     
     return(
         <View style={styles.container}>

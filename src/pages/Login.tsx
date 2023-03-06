@@ -1,11 +1,12 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image,  TouchableOpacity,} from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 import api from '../services/api'
 import {useMyContext} from '../context/AuthProvider'
-import {Ionicons} from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {Ionicons, MaterialIcons} from '@expo/vector-icons';
+
+
+// import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Login : React.FC = () => {
     const [email, setEmail] = useState(String);
@@ -46,14 +47,14 @@ const Login : React.FC = () => {
                     value={email}
                     onChangeText={(text)=>handleValidEmail(text)}
                 />
-                <AntDesign name="user" size={24} color="black" />
-            
+                <MaterialIcons name="email" size={24} color="black" />
             
 
             </View>
             {validEmail ? 
             (<Text style={styles.textError}>Formato de email incorreto</Text>) 
             : (<Text></Text>)}
+            
             <View style={styles.inputArea}>
                 <TextInput style={styles.input}
                     placeholder="Senha" 
