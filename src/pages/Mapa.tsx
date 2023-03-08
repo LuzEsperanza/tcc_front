@@ -9,8 +9,7 @@ import AsyncStorage  from '@react-native-async-storage/async-storage';
 
 const Mapa : React.FC = () => {
     const navigation = useNavigation();
-    
-    const [geometria, setGeometria] = useState({latitude:0, longitude:0});
+   
     const [position, setPosition] = useState({
         latitude: -6.886532,
         longitude: -38.563994,
