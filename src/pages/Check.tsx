@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState }  from 'react';
 
 import { StyleSheet, Text, View, Pressable, StatusBar, FlatList } from 'react-native';
 
@@ -8,10 +8,13 @@ import { Card } from 'react-native-paper';
 
 import Constants from 'expo-constants';
 
+import {useNavigation, useRoute}  from '@react-navigation/native';
+
+import api from '../services/api';
 
 const data = [
 
-    { id: 1, txt: 'Abandono de animais', isChecked: false },
+    { id: 1, txt: 'Maus tratos', isChecked: false },
 
     { id: 2, txt: 'Transporte ilegal', isChecked: false },
 
@@ -19,7 +22,7 @@ const data = [
 
     { id: 4, txt: 'Caça ilegal', isChecked: false },
 
-    { id: 5, txt: 'Maus tratos', isChecked: false },
+    { id: 5, txt: 'Abandono de animais', isChecked: false },
 
     { id: 6, txt: 'Pesca predatória', isChecked: false },
 
@@ -104,6 +107,41 @@ const App = () => {
         );
 
     }
+    const route = useRoute();
+    
+
+    const id = route.params
+    // const crimes = Array(5).fill(0)
+    const [crimes, setCrimes] = useState<string[]>([]);
+    var delito = [];
+
+    async function salvar(denuncia, crimeAmbiental) {
+        console.log(typeof crimeAmbiental)
+        await api.post('/pertence', {crimeAmbiental, denuncia}).then((response) =>
+        {
+           return response.data
+          
+           
+        })
+        
+    }
+   
+    async function handleNextStep (){
+      selected.map( selected =>{
+        const id = selected.id
+        delito.push(id)
+       
+       
+      })
+        delito.forEach( d =>{
+            salvar(id, d)
+        })
+        
+         
+         // navigation.navigate('Principal')
+         
+         
+     }    
 
 
     return (
@@ -116,13 +154,16 @@ const App = () => {
 
             </View>
 
-            <Text style={styles.text}>Selected </Text>
+            <Text style={styles.text}>Selecionados </Text>
 
             <View style={{ flex: 1 }}>
 
                 {renderFlatList(selected)}
 
             </View>
+            <Pressable style={styles.cadastro} onPress={()=>handleNextStep()}>
+                <Text style={styles.buttonText}>Enviar</Text>
+            </Pressable>
 
             <StatusBar />
 
@@ -184,6 +225,29 @@ const styles = StyleSheet.create({
         textAlign: 'center',
 
         fontWeight: 'bold',
+
+    },
+
+    cadastro: {        
+        backgroundColor: '#000000',
+        borderWidth: 4,
+        borderColor: '#000000',
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop : 9,
+        margin: 20,
+        width: 200,
+        justifyContent: 'center',
+        padding: 10,
+        marginLeft: 80,
+        marginBottom: 80        
+    },
+    buttonText : {
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        color: '#f9fafc'
 
     },
 

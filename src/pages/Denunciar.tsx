@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {View, StyleSheet, Text,TextInput, Pressable,ScrollView, Button, Image} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
-import MapView, {Marker, MapPressEvent}  from 'react-native-maps';
-import mapMaker from '../images/marcador.svg';
 import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface Positions {
     latitude:number;
@@ -29,15 +26,12 @@ const Denunciar : React.FC = () => {
     const {denunciante} = useMyContext();
    
     const navigation = useNavigation();
-
     const paramsPositiom = route.params as ParamsPositions;
     const [titulo, setTitulo] = useState('');
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
-    const [imagensURI, setImagesURI] = useState<string[]>([]);
     const [image, setImage] = useState(null);
-    
     const latitude = paramsPositiom.position.latitude
     const longitude= paramsPositiom.position.longitude
     const [selectedDate, setSelectedDate] = useState(new Date());
@@ -66,14 +60,16 @@ const Denunciar : React.FC = () => {
        const identificado = denunciante.denuncianteID;
         console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
-        await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+        const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           
            
         })
+        const id =  informacao.id
+        console.log(informacao.id)
         
-        // navigation.navigate('Principal')
+        navigation.navigate('Check', id)
         
         
     }    
@@ -141,7 +137,7 @@ const Denunciar : React.FC = () => {
             {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             
             <Pressable  style={styles.cadastro} onPress={handleNextStep}>
-                <Text style={styles.buttonText}>Enviar</Text>
+                <Text style={styles.buttonText}>Próximo</Text>
             </Pressable>
 
         </ScrollView>

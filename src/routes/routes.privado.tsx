@@ -47,7 +47,7 @@ const RoutesPrivado : React.FC = () => {
                 component={Check}
                 options ={{
                     headerShown:true,
-                    header: ()=><Header  title='Check'/>
+                    header: ()=><Header  title='Selecione um possivel delito'/>
 
                 }}
                 />
