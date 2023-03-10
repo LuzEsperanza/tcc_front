@@ -1,49 +1,38 @@
 import React, {useEffect,useState} from 'react';
-import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
-import {RectButton, ScrollView, TextInput} from 'react-native-gesture-handler';
+import { View,Text, StyleSheet} from 'react-native';
+import { ScrollView, TextInput} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
-import {useFocusEffect, useRoute}  from '@react-navigation/native';
 import api from '../services/api';
 import {useMyContext} from '../context/AuthProvider';
 
-
 interface Denuncia{
-    id:number;
-    
+    id:number;    
     descricao:string;
     horaDenuncia: string;
     encaminhado: string;
     condicao: string;
-     CrimeAmbiental:{
+    CrimeAmbiental:{
         tilulo:string;
-    }
-    
-    
-    
+    }   
 }
 
 
 const Principal : React.FC = () => {
-    const route = useRoute();
-    
+       
     const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
     const {denunciante} = useMyContext();
    
-   console.log(denunciante.denuncianteID)
-    // useEffect(()=>{
-       
-        
-    //     const consulta = '/denuncia/';
-    //     const teste = consulta.concat(denunciante.denuncianteID.toString())
-
-    //     // console.log(denunciante)
-    //     console.log(teste)
-    //     api.get(teste).then(response=>{
-    //         console.log(denuncias)
-    //         setDenuncias(response.data)
-            
-    //     });
-    // }, [denuncias]);
+    console.log(denunciante.denuncianteID)
+    const getUsers = async () => {
+        const consulta = '/denuncia/';
+        const teste = consulta.concat(denunciante.denuncianteID.toString())
+        const users = await api.get(teste);
+        setDenuncias(users.data);
+    };
+   
+    useEffect(() => {
+        getUsers();
+    }, []); 
     
     return (
         <ScrollView >
