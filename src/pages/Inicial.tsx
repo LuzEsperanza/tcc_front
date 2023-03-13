@@ -1,7 +1,5 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { View,Text, StyleSheet, Pressable, Image} from 'react-native';
-import {RectButton} from 'react-native-gesture-handler';
-import {Feather} from '@expo/vector-icons';
 import {useNavigation}  from '@react-navigation/native';
 import api from '../services/api'
 
@@ -37,7 +35,6 @@ const Inicial : React.FC = () => {
             <Text style={styles.subtitulo}>Denuncie crimes ambientais aqui!</Text>
             <Text style={styles.aviso}>Como deseja entrar?</Text>
             <Pressable  style={styles.tenhoConta} onPress={()=>Login()}>
-                {/* <Feather name="user" size={20} color="#000000"></Feather> */}
                 <Text style={styles.buttonText}>Tenho conta</Text>
             </Pressable>
             <Pressable  style={styles.anonimamente} onPress={()=>Anonimo()}>
@@ -53,7 +50,7 @@ const Inicial : React.FC = () => {
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#F0F8FF',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -85,7 +82,7 @@ const styles = StyleSheet.create({
     },
     tenhoConta : {
         padding: 2,
-        backgroundColor: '#f9fafc',
+        backgroundColor: '#F0F8FF',
         borderWidth: 4,
         borderColor: '#000000',
         paddingTop: 6,
@@ -104,7 +101,7 @@ const styles = StyleSheet.create({
     },
     anonimamente : {
         padding: 2,
-        backgroundColor: '#808080',
+        backgroundColor: '#C0C0C0',
         borderWidth: 4,
         borderColor: '#000000',
         paddingTop: 6,
@@ -122,7 +119,7 @@ const styles = StyleSheet.create({
     },
     cadastro: {
         padding: 2,
-        backgroundColor: '#f9fafc',
+        backgroundColor: '#F0F8FF',
         borderBottomWidth: 2,
         borderColor: '#1C1C1C',
         flexDirection: 'row',
