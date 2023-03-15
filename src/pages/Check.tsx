@@ -114,9 +114,10 @@ const App = () => {
     // const crimes = Array(5).fill(0)
     const [crimes, setCrimes] = useState<string[]>([]);
     var delito = [];
+    const navigation = useNavigation();
 
     async function salvar(denuncia, crimeAmbiental) {
-        console.log(typeof crimeAmbiental)
+        // console.log(typeof crimeAmbiental)
         await api.post('/pertence', {crimeAmbiental, denuncia}).then((response) =>
         {
            return response.data
@@ -127,23 +128,18 @@ const App = () => {
     }
    
     async function handleNextStep (){
-      selected.map( selected =>{
-        const id = selected.id
-        delito.push(id)
+        selected.map( selected =>{
+            const id = selected.id
+            delito.push(id)      
        
-       
-      })
+        })
         delito.forEach( d =>{
             salvar(id, d)
         })
-        
+        navigation.navigate('Principal')
          
-         // navigation.navigate('Principal')
-         
-         
-     }    
-
-
+    } 
+    
     return (
 
         <View style={styles.container}>
@@ -162,7 +158,7 @@ const App = () => {
 
             </View>
             <Pressable style={styles.cadastro} onPress={()=>handleNextStep()}>
-                <Text style={styles.buttonText}>Enviar</Text>
+                <Text style={styles.buttonText}>Salvar</Text>
             </Pressable>
 
             <StatusBar />

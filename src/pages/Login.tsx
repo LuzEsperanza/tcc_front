@@ -33,7 +33,7 @@ const Login : React.FC = () => {
     async function handleNextStep (){
         
         await logar(email, senha);
-        navigation.navigate('Foto');
+        navigation.navigate('Principal');
         
     }
     return (

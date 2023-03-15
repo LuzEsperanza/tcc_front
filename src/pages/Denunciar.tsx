@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
+import {Entypo} from '@expo/vector-icons';
 
 interface Positions {
     latitude:number;
@@ -31,13 +32,12 @@ const Denunciar : React.FC = () => {
     const [descricao, setDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
-    const [image, setImage] = useState(null);
     const latitude = paramsPositiom.position.latitude
     const longitude= paramsPositiom.position.longitude
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [informacaoDenunciado, setInformacao] = useState('');
-
+    const [imagesPath, setImagesPath] = useState<string[]>([]);
     
     const showDatePicker = () => {
       setDatePickerVisible(true);
@@ -54,7 +54,43 @@ const Denunciar : React.FC = () => {
    
         
     const data =selectedDate.toISOString()
-    let horarioAbordagem = data.substring(11,19)
+    let horarioAbordagem = data.substring(11,19);
+
+    async function handleSelectImages() {
+        // tenho acesso a galeria de fotos e não a câmera
+        const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        /* console.log(status); */
+        if(status !== 'granted'){// granted é quando o usuário deu permissão
+          alert('Eita, precisamos de acesso às suas fotos...');
+          return;
+        }
+        let result = await ImagePicker.launchImageLibraryAsync({
+          // permite ao usuario editar a imagem (crop), antes de subir o app
+          allowsEditing: true,
+          quality: 1,
+          //quero apensas imagems e não vídeo tb
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        });
+        /* console.log(result); */
+        if(!result.canceled) { // se cancelou o upload da imagem
+          // questão do conceito de imutabilidade. sempre que uma imagem for adicionado, 
+          //temos que copiar as imagens que tinha antes no array. 
+          //se não vai apagar na próxima renderização. pois começa sempre do zero
+          setImagesPath([...imagesPath, result.assets[0].uri]);
+        //   console.log(imagesPath[0]);
+        }
+    }
+
+    async function salvar(denuncia, imagem_denuncia) {
+        // console.log(imagem_denuncia)
+        await api.post('/foto', {denuncia, imagem_denuncia}).then((response) =>
+        {
+           return response.data
+          
+           
+        })
+        
+    }
 
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
@@ -68,31 +104,16 @@ const Denunciar : React.FC = () => {
         })
         const id =  informacao.id
         console.log(informacao.id)
-        
+        imagesPath.forEach( i =>{
+            // console.log(i)
+            salvar(id, i)
+        })
         navigation.navigate('Check', id)
         
         
     }    
     
-    const pickImage = async () => {
-        // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
-        });
-    
-        console.log(result);
-    
-        if (!result.canceled) {
-          setImage(result.assets[0].uri);
-        }
-        
-        
-
-    };
-
+   
     return (
         <ScrollView style={styles.container}>
             
@@ -132,9 +153,26 @@ const Denunciar : React.FC = () => {
             <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
            
            
-            <Text  style={styles.title}>Foto</Text>
-            <Button title="Pick an image from camera roll" onPress={pickImage} />
-            {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+            <Text  style={styles.title}>Insira fotos</Text>
+
+            <View style={styles.caixa}>
+                <ScrollView horizontal={true}>
+                <Pressable style={styles.adicionar} onPress={handleSelectImages}>
+                   
+                   <Entypo name="plus" size={24} color="black"/>
+                </Pressable>
+            
+            
+           
+                {imagesPath.map(imgUri =>
+                    
+                    <Image style={styles.image} key={imgUri} source={{uri:imgUri}}/>)}
+
+            </ScrollView> 
+
+            </View>
+               
+            
             
             <Pressable  style={styles.cadastro} onPress={handleNextStep}>
                 <Text style={styles.buttonText}>Próximo</Text>
@@ -241,6 +279,49 @@ const styles = StyleSheet.create({
         color: '#f9fafc'
 
     },
+    adicionar : {
+        alignItems: 'center',
+	    justifyContent: 'center',
+	    borderWidth: 1,
+	    borderColor: 'gray',
+	    width: 100,
+	    height: 100,
+        marginLeft: 3,
+        marginTop: 3,
+        marginBottom: 3
+    },
+    image: {
+        marginTop: 3,
+	    borderWidth: 1,
+	    width: 100,
+	    height: 100,
+        marginLeft: 5,
+        borderColor: 'gray',
+    },
+    
+    
+
+    caixa: {
+
+        width: '90%',
+        height: 120,
+        justifyContent: 'center',
+        borderWidth: 1.4,
+        padding: 5,
+        borderRadius: 10,
+       
+
+    },
+    text: {
+
+        textAlign: 'center',
+
+        fontWeight: 'bold',
+
+    },
+    
+    
+    
     
  })
 

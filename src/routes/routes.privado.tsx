@@ -5,7 +5,6 @@ import Usuario from '../pages/Usuario';
 import Principal from '../pages/Principal';
 import Check from '../pages/Check';
 import Mapa from '../pages/Mapa';
-import Foto from '../pages/Foto';
 import Header from '../components/Header';
 import HeaderP from '../components/HeaderP'
 
@@ -61,18 +60,7 @@ const RoutesPrivado : React.FC = () => {
 
                 }}
                 />
-            <Screen 
-                name="Foto"
-                component={Foto}
-                options ={{
-                    headerShown:true,
-                    header: ()=><Header  title='Insira fotos'/>
-
-                }}
-                />
-           
-            
-                     
+                               
         </Navigator>
 
       

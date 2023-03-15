@@ -13,7 +13,10 @@ interface Denuncia{
     condicao: string;
     CrimeAmbiental:{
         tilulo:string;
-    }   
+    };
+    Pertence:{
+        id:number;
+    }     
 }
 
 
@@ -39,7 +42,7 @@ const Principal : React.FC = () => {
             <Text style={styles.titulo}>Minhas denúncias</Text>
 
             {denuncias.map(denuncia =>(
-                <View key={denuncia.id} style={styles.caixa}>
+                <View key={denuncia.Pertence.id} style={styles.caixa}>
             
                     <Text style={styles.title}>{denuncia.CrimeAmbiental.tilulo}</Text>
             

@@ -50,11 +50,11 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
 }
 const styles = StyleSheet.create({
     container : {
-        padding: 24,
+        padding: 15,
         backgroundColor: '#f9fafc',
         borderBottomWidth: 1,
         borderColor: '#dde3f0',
-        paddingTop: 44,
+        paddingTop: 20,
 
         flexDirection: 'row',
         justifyContent: 'space-between',
