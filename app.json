@@ -2,6 +2,7 @@
   "expo": {
     "name": "teste",
     "slug": "teste",
+    "scheme": "teste",
     "version": "1.0.0",
     "assetBundlePatterns": [
       "**/*"

@@ -9,11 +9,15 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
-    const navigation = useNavigation();   
+    const navigation = useNavigation(); 
+    async function handlePrincipal (){ 
+        navigation.navigate('Principal');       
+    }
+  
    
     return (
        <View style={styles.container}>
-          <Pressable onPress={navigation.goBack}>
+          <Pressable onPress={()=>handlePrincipal()}>
             <Feather name="arrow-left" size={24} color="#15b6d5"/>             
           </Pressable>
            
@@ -29,7 +33,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9fafc',
         borderBottomWidth: 1,
         borderColor: '#dde3f0',
-        paddingTop: 44,
+        paddingTop: 40,
+
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'

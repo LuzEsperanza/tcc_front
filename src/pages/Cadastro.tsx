@@ -9,12 +9,18 @@ const Cadastro : React.FC = () => {
     const [validEmail, setValidEmail] = useState(false);
     const [senha, setSenha] = useState(String);
     const [nome, setNome] = useState(String);
+    const [errorNome, setErrorNome] = useState(String);
     const [hidePass, setHidePass] = useState(true)
+    const [hide, setHide] = useState(true)
     const navigation = useNavigation();
-    const handleValidEmail = (text) => {
-        let re = /\S+@\S+\.\S+/;
-        setEmail(text)
-        if(re.test(text)){
+    const [error, setError] = useState('');
+    const [comfirme, setComfirme] = useState(String);
+    const [validSenha, setValidSenha] = useState(false);
+    const handleValidEmail = (texto) => {
+        let res =  /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        
+        setEmail(texto)
+        if(res.test(texto)){
             setValidEmail(false)
         }
         else{
@@ -22,16 +28,36 @@ const Cadastro : React.FC = () => {
         }
 
     }
+    const handleValidSenha= (text) => {
+        let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+        
+        setSenha(text)
+        if(re.test(text)){
+            setValidSenha(false)
+        }
+        else{
+            setValidSenha(true)
+        }
+
+    } 
 
     async function handleNextStep (){
         
-        await api.post('/denunciante/cadastro', {nome, email, senha}).then((response) =>
-        {
-           console.log(response)
-           
-           
-        })
-        navigation.navigate('Login')
+        if(!nome.trim() || nome.length < 3){
+            setErrorNome('Nome inválido!')
+
+        }
+        else if (senha !== comfirme){
+            console.log("oi")
+            setError('Senhas diferentes!')
+        }
+        else{
+            await api.post('/denunciante/cadastro', {nome, email, senha})
+            navigation.navigate('Login')           
+
+        }
+        
+       
     }
 
     return (
@@ -42,7 +68,7 @@ const Cadastro : React.FC = () => {
                     style={styles.input} 
                     placeholder="Email"
                     keyboardType="email-address"
-                    onChangeText={(text)=>handleValidEmail(text)}/>
+                    onChangeText={(texto)=>handleValidEmail(texto)}/>
                 <MaterialIcons name="email" size={24} color="black" />
 
             </View>
@@ -55,17 +81,23 @@ const Cadastro : React.FC = () => {
                 <TextInput
                     style={styles.input}
                     placeholder="Nome"               
-                    onChangeText={setNome}/>
+                    onChangeText={setNome}
+                />
                 <AntDesign name="user" size={24} color="black" />               
 
            </View>
+           {errorNome ? (
+                <Text style={styles.textError}>
+                    {errorNome}
+                </Text>
+            ) : null}      
 
-           <View style={styles.inputArea}>
+            <View style={styles.inputArea}>
                 <TextInput
                     style={styles.input} 
                     placeholder="Senha" 
-                    secureTextEntry={true}
-                    onChangeText={setSenha}
+                    secureTextEntry={hidePass}
+                    onChangeText={(text)=>handleValidSenha(text)}
                 />
                 <TouchableOpacity onPress={()=>setHidePass(!hidePass)}>
                    {hidePass ? 
@@ -76,7 +108,33 @@ const Cadastro : React.FC = () => {
                     
                 </TouchableOpacity>
 
-           </View>        
+           </View>
+           {validSenha ? 
+            (<Text style={styles.textError}>Senha fraca</Text>) 
+            :
+             (<Text></Text>)}
+            <View style={styles.inputArea}>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Comfirme sua Senha" 
+                    secureTextEntry={hide}
+                    onChangeText={setComfirme}
+                />
+                <TouchableOpacity onPress={()=>setHide(!hide)}>
+                   {hide ? 
+                   <Ionicons  name="eye" color="black" size={25}/>
+                   :
+                   <Ionicons  name="eye-off" color="black" size={25}/>
+                   }
+                    
+                </TouchableOpacity>
+
+           </View>
+           {error ? (
+                <Text style={styles.textError}>
+                    {error}
+                </Text>
+            ) : null}             
 
             
             

@@ -24,7 +24,7 @@ const Principal : React.FC = () => {
        
     const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
     const {denunciante} = useMyContext();
-   
+    
     console.log(denunciante.denuncianteID)
     const getUsers = async () => {
         const consulta = '/denuncia/';
@@ -45,36 +45,21 @@ const Principal : React.FC = () => {
                 <View key={denuncia.Pertence.id} style={styles.caixa}>
             
                     <Text style={styles.title}>{denuncia.CrimeAmbiental.tilulo}</Text>
+
+                    <Text style={styles.status}>Data de criação</Text>
+                            <View style={styles.input}>
+                                <Feather  size={20} style={styles.calendario} name='calendar'/>
+                                <Text  style={styles.data}>{denuncia.horaDenuncia}</Text>
+
+                            </View>
             
             
                     <View style={styles.caixa2}>
                         <View>
                             <Text style={styles.status}>Status da denúncia</Text>
                     
-                                <TextInput style={styles.input}>
+                                <TextInput style={styles.inputStatus}>
                                     <Text>{denuncia.condicao}</Text>
-                                </TextInput>
-
-                        </View>
-
-                        <View>
-                            <Text style={styles.status}>Data de criação</Text>
-                            <View style={styles.input}>
-                                <Feather  size={20} style={styles.calendario} name='calendar'/>
-                                <Text  style={styles.data}>{denuncia.horaDenuncia}</Text>
-
-                            </View>
-                   
-                        </View>
-                                
-                    </View>
-
-                    <View style={styles.caixa2}>
-                        <View>
-                            <Text style={styles.status}>Descrição</Text>
-                    
-                                <TextInput style={styles.input}>
-                                    <Text>{denuncia.descricao}</Text>
                                 </TextInput>
 
                         </View>
@@ -82,15 +67,25 @@ const Principal : React.FC = () => {
                         <View>
                             <Text style={styles.status}>Encaminhada</Text>
 
-                            <View style={styles.input}>
-                    
+                            <View style={styles.inputStatus}>
+
                                 <Text  style={styles.data}>{denuncia.encaminhado}</Text>
 
                             </View>
+                            
                    
                         </View>
-                
+                                
                     </View>
+                    
+                    <Text style={styles.descricao}>Descrição</Text>
+                    
+                    <TextInput style={styles.inputdescricao}>
+                        <Text>{denuncia.descricao}</Text>
+                    </TextInput>
+
+
+                  
                     
                 </View>)
             )}
@@ -112,19 +107,14 @@ const styles = StyleSheet.create({
         fontSize : 28,
         alignItems: 'center',
         textAlign: 'center',
-
     },
     
-    caixa: {
-        
-        margin: 12,
-        
+    caixa: {        
+        margin: 12,        
         borderWidth: 1.4,
         padding: 10,
         borderRadius: 10,
         flex: 1,        
-
-        
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 18,
@@ -132,29 +122,20 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         textAlignVertical: 'top',
         backgroundColor: '#C4C4C4',
-        borderColor: '#808080',
+        borderColor: '#A9A9A9',
         marginLeft: 20
     },
     title : {
-       
         fontSize: 20,
-        fontFamily: 'Roboto',
-       
-       
+        fontFamily: 'Roboto',   
     },
     caixa2 : {
-        flex:1,
-        
-        width: 310,
+        flex:1,        
+        width: 360,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingVertical: 1,
-        
-      
-        textAlignVertical: 'top',
-      
-       
+        textAlignVertical: 'top',    
     },
     input : {
         flexDirection: 'row',
@@ -165,13 +146,41 @@ const styles = StyleSheet.create({
         padding: 5,
         alignItems: 'center',
         marginBottom: 1,
-        textAlign: 'center'
+        textAlign: 'center',
+        width: 200,
+    },
+    inputStatus : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderWidth: 1.4,
+        borderRadios: 20,
+        flex: 1,
+        padding: 5,
+        alignItems: 'center',
+        marginBottom: 1,
+        width: 175,
+       
+    },
+    inputdescricao : {
+        
+        borderWidth: 1.4,
+        borderRadios: 20,
+        flex: 1,
+        padding: 5,        
+        marginBottom: 1,        
+        width: 360,
+       
     },
     status : {
         fontWeight: 'bold',
         fontSize: 16,
         
     },
+    descricao : {
+        fontWeight: 'bold',
+        fontSize: 16,
+        textAlign: 'right'
+    },    
     calendario: {
         paddingLeft:2,
 

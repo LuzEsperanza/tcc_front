@@ -60,7 +60,6 @@ const styles = StyleSheet.create({
         fontSize : 28,
         alignItems: 'center',
         textAlign: 'center',
-
     },
     subtitulo : {
         fontFamily: 'Roboto',
@@ -69,7 +68,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop : 10,
         lineHeight: 37,
-
     },
     aviso : {
         fontFamily: 'Roboto',
@@ -78,44 +76,38 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginTop : 10,
         marginBottom : 10
-
     },
     tenhoConta : {
         padding: 2,
-        backgroundColor: '#F0F8FF',
+        backgroundColor: '#5F9EA0',
         borderWidth: 4,
-        borderColor: '#000000',
+        borderColor: '#5F9EA0',
         paddingTop: 6,
         paddingBottom: 6,
         paddingLeft: 6,
         paddingRight: 6,
-        borderRadius: 10,
-
+        borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop : 9,
         marginBottom : 8
-        
-
     },
     anonimamente : {
         padding: 2,
-        backgroundColor: '#C0C0C0',
+        backgroundColor: '#5F9EA0',
         borderWidth: 4,
-        borderColor: '#000000',
+        borderColor: '#006400',
         paddingTop: 6,
         paddingBottom: 6,
         paddingLeft: 8,
         paddingRight: 8,
-        borderRadius: 10,
-
+        borderRadius: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         marginTop : 9,
         marginBottom : 8
-
     },
     cadastro: {
         padding: 2,
@@ -127,21 +119,16 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop : 9,
         marginBottom : 8
-
-    },
-   
+    },   
     buttonText : {
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#000000'
-
     },
-
     buttonTextCadastro : {
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#1C1C1C'
-
     },
     tinyLogo: {
         width: 166,

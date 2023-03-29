@@ -6,8 +6,8 @@ import Principal from '../pages/Principal';
 import Check from '../pages/Check';
 import Mapa from '../pages/Mapa';
 import Header from '../components/Header';
-import HeaderP from '../components/HeaderP'
-
+import HeaderP from '../components/HeaderP';
+import HeaderU from '../components/HeaderU'
 
 const {Navigator, Screen} = createNativeStackNavigator();
 const RoutesPrivado : React.FC = () => {
@@ -20,7 +20,7 @@ const RoutesPrivado : React.FC = () => {
                 component={Usuario}
                 options ={{
                     headerShown:true,
-                    header: ()=><Header  title='Meu Perfil'/>
+                    header: ()=><HeaderU  title='Meu Perfil'/>
 
                 }}
                 />

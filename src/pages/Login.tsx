@@ -1,24 +1,29 @@
 import React, {useState} from 'react';
 import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image,  TouchableOpacity,} from 'react-native';
+import * as AuthSession from 'expo-auth-session';
 import {useNavigation}  from '@react-navigation/native';
-import api from '../services/api'
 import {useMyContext} from '../context/AuthProvider'
-import {Ionicons, MaterialIcons} from '@expo/vector-icons';
-
-
-// import { TouchableOpacity } from 'react-native-gesture-handler';
+import {Ionicons, MaterialIcons, AntDesign} from '@expo/vector-icons';
 
 const Login : React.FC = () => {
     const [email, setEmail] = useState(String);
     const [validEmail, setValidEmail] = useState(false);
     const [senha, setSenha] = useState(String);
-    
+    const [error, setError] = useState('');
+
     const [hidePass, setHidePass] = useState(true)
     const navigation = useNavigation();
     const {logar} = useMyContext();
 
+    type AuthResponse = {
+        type: string;
+        params: {
+          access_token: string;
+        }
+      }
+
     const handleValidEmail = (text) => {
-        let re = /\S+@\S+\.\S+/;
+        let re = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         setEmail(text)
         if(re.test(text)){
             setValidEmail(false)
@@ -31,9 +36,29 @@ const Login : React.FC = () => {
     
 
     async function handleNextStep (){
+        if (!senha.trim() || senha.length < 8){
+            setError('Senha muito pequena!')
+        }
+        else{
+            await logar(email, senha);
+            navigation.navigate('Principal');
+
+        }
+          
         
-        await logar(email, senha);
-        navigation.navigate('Principal');
+        
+    }
+    async function handleSingIn (){
+        const CLIENT_ID = '602969099493-c5a9bhs7flc50ji66hbkb4d2tpdc43sb.apps.googleusercontent.com';
+        const REDIRECT_URI = 'https://auth.expo.io/@luzesperanza/teste';
+        const RESPONSE_YPE = 'token';
+        const SCOPE = encodeURI('profile email');
+
+        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_YPE}&scope=${SCOPE}`;
+        const {type, params} = await AuthSession.
+        startAsync({authUrl}) as AuthResponse;
+        console.log({token: params.access_token})
+      
         
     }
     return (
@@ -72,19 +97,21 @@ const Login : React.FC = () => {
                     
                 </TouchableOpacity>
 
-            </View>                   
-            
-           
+            </View>
+            {error ? (
+                <Text style={styles.textError}>
+                    {error}
+                </Text>
+            ) : null} 
+
             <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
                 <Text style={styles.text}>Enviar</Text>
             </Pressable>
-
-           
-
-
-
-       
-
+            <Text style={styles.ou}>Ou</Text>
+            <Pressable  style={styles.google} onPress={()=>handleSingIn()}>
+                <AntDesign name="google" size={24} color="black" />
+                <Text style={styles.buttonText}>Continuar pelo google</Text>
+            </Pressable>
         </ScrollView>
       
     );
@@ -100,7 +127,7 @@ const styles = StyleSheet.create({
     },
     inputArea: {
         flexDirection: 'row',
-        width: '90%',
+        width: '95%',
         backgroundColor: '#FFFFFF',
         borderRadius: 5,
         height: 50,
@@ -112,31 +139,22 @@ const styles = StyleSheet.create({
 
     },
     input: {
-        height: 50,
-       
-        width: '85%',
-        
-        padding: 8,
+        height: 50,       
+        width: '85%',        
+        padding: 9,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        color: 'black',
-       
-        fontSize:18,
-    
+        color: 'black',       
+        fontSize:18,    
     },
     icon :{
         width: '15%',
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-
-
-    },
-   
-   
-   
+    },   
     atualizar: {
         backgroundColor: '#000000',
         borderWidth: 4,
@@ -145,26 +163,51 @@ const styles = StyleSheet.create({
         paddingBottom: 6,
         borderRadius: 10,
         alignItems: 'center',
-        marginTop : 25,
-        
+        marginTop : 25,        
         margin: 20,
         width: 200,
         justifyContent: 'center',
         padding: 10,
-        marginLeft: 80,
-        marginBottom: 80
-        
+        alignSelf: 'center',
+        marginBottom: 40        
+    },
+    google:{
+        backgroundColor: '#1e90ff',
+        borderWidth: 4,
+        borderColor: '#1e90ff',
+        paddingTop: 6,
+        paddingBottom: 6,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop : 25,        
+        flexDirection: 'row',
+        width: 300,
+        justifyContent: 'space-between',
+        padding: 20,
+        alignSelf: 'center',
+        marginBottom: 80  
+
     },
     buttonText : {
         fontFamily: 'Roboto',
         fontSize: 20,
-        color: '#000000'
-
+        color: '#f9fafc',
+        fontWeight: 'bold',
+        paddingLeft: 20,
     },
+   
     text : {
         fontFamily: 'Roboto',
         fontSize: 20,
-        color: '#f9fafc'
+        color: '#f9fafc',
+        fontWeight: 'bold',
+
+    },
+    ou : {
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center'     
 
     },
     tinyLogo: {

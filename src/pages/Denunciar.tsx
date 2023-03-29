@@ -6,7 +6,9 @@ import api from '../services/api';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
 import {Entypo} from '@expo/vector-icons';
-
+import axios from 'axios';
+import RNFS from 'react-native-fs';
+import path from 'path-browserify';
 interface Positions {
     latitude:number;
     longitude:number;
@@ -57,10 +59,10 @@ const Denunciar : React.FC = () => {
     let horarioAbordagem = data.substring(11,19);
 
     async function handleSelectImages() {
-        // tenho acesso a galeria de fotos e não a câmera
+       
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
         /* console.log(status); */
-        if(status !== 'granted'){// granted é quando o usuário deu permissão
+        if(status !== 'granted'){
           alert('Eita, precisamos de acesso às suas fotos...');
           return;
         }
@@ -70,20 +72,22 @@ const Denunciar : React.FC = () => {
           quality: 1,
           //quero apensas imagems e não vídeo tb
           mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        //   allowsMultipleSelection: true,
         });
-        /* console.log(result); */
+        //  console.log(result); 
         if(!result.canceled) { // se cancelou o upload da imagem
           // questão do conceito de imutabilidade. sempre que uma imagem for adicionado, 
           //temos que copiar as imagens que tinha antes no array. 
           //se não vai apagar na próxima renderização. pois começa sempre do zero
           setImagesPath([...imagesPath, result.assets[0].uri]);
-        //   console.log(imagesPath[0]);
+        //   console.log(result);
         }
+        
     }
 
-    async function salvar(denuncia, imagem_denuncia) {
-        // console.log(imagem_denuncia)
-        await api.post('/foto', {denuncia, imagem_denuncia}).then((response) =>
+    async function salvar(denuncia, foto_imagem) {
+        console.log(foto_imagem._parts[0])
+        await api.post('/foto',foto_imagem, denuncia).then((response) =>
         {
            return response.data
           
@@ -91,10 +95,10 @@ const Denunciar : React.FC = () => {
         })
         
     }
-
+  
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
-        console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
+        // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
         const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
@@ -102,13 +106,46 @@ const Denunciar : React.FC = () => {
           
            
         })
-        const id =  informacao.id
-        console.log(informacao.id)
-        imagesPath.forEach( i =>{
-            // console.log(i)
-            salvar(id, i)
+        const data = new FormData();
+        // console.log(informacao.id);
+        const denuncia = informacao.id
+
+        data.append('denuncia', informacao.id);       
+        
+        imagesPath.forEach( async (imageURI, index) =>{
+          
+            data.append('images', {
+                name: `image${index}.jpg`,
+                type: 'image/jpg',
+                uri: imageURI,
+            } as any);
+            console.log(data)
+            const config = {     
+                headers: { 'content-type': 'multipart/form-data' }
+            }
+           
+            await api.post('/foto', data, config );
+            
+        
         })
-        navigation.navigate('Check', id)
+       
+        
+
+        // imagesPath.forEach(async (imageURI, index) => {
+        //     const fileName = imageURI.substring(imageURI.lastIndexOf('/') + 1);
+        //     images.append('images', fileName);
+        //     await api.post('/foto', {denuncia, images});
+        // });
+
+        
+        
+       
+       
+        
+        
+
+       
+        // navigation.navigate('Check', informacao.id)
         
         
     }    
@@ -121,14 +158,14 @@ const Denunciar : React.FC = () => {
             <TextInput placeholder='Ex: descrição física, onde reside, nome' multiline style={[styles.input,{height:110}]} 
             value={informacaoDenunciado} onChangeText={setInformacao}/>
 
-            <Text  style={styles.title}>Tipo de atividade inlicita</Text>
-            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>            
+            {/* <Text  style={styles.title}>Tipo de atividade inlicita</Text>
+            <TextInput style={styles.input} value={titulo} onChangeText={setTitulo}/>             */}
 
             <Text style={styles.local}>Local do ocorrido</Text>
             <Text  style={styles.title} >Rua</Text>
             <TextInput style={styles.input}   value={rua} onChangeText={setRua}/>
 
-            <Text  style={styles.title}>Numero</Text>
+            <Text  style={styles.title}>Número</Text>
             <TextInput style={styles.input} keyboardType="numeric" value={numero} onChangeText={setNumero}/>
 
             <Text style={styles.title}>Horário de abordagem</Text>

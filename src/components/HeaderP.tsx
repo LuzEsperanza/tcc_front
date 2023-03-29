@@ -1,9 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, Pressable} from 'react-native';
-import {BorderlessButton} from 'react-native-gesture-handler';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
-import {useFocusEffect, useRoute}  from '@react-navigation/native';
 import {useMyContext} from '../context/AuthProvider';
 
 interface HeaderProps {
@@ -13,10 +11,15 @@ interface HeaderProps {
 
 
 
-const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
+const Header: React.FC<HeaderProps> = () => {
 
     const navigation = useNavigation();
     const {denunciante} = useMyContext();
+    const {deslogar} = useMyContext();
+    async function handleNextInicial (){ 
+        await deslogar()       
+       
+    }
 
     function handleNextStep (){
         
@@ -32,8 +35,9 @@ const Header: React.FC<HeaderProps> = ({title, showX=true}) => {
    
     return (
         <View style={styles.container}>
-            <Pressable onPress={navigation.goBack}>
-                <Feather name="arrow-left" size={24} color="#15b6d5"/>
+            <Pressable onPress={()=>handleNextInicial()}>
+                <Text  style={styles.deslogar}>Sair</Text>
+                
             </Pressable>         
                
             <Pressable  style={styles.denunciar} onPress={()=>handleNextStep()}>
@@ -54,17 +58,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9fafc',
         borderBottomWidth: 1,
         borderColor: '#dde3f0',
-        paddingTop: 20,
-
+        paddingTop: 44,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    title : {
-        
+    title : {        
         color: '#000000',
-        fontSize: 16,
-
+        fontSize: 25,
     },
     denunciar :{
         height: 50,
@@ -76,7 +77,11 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems: 'center',
         marginBottom: 10  
-    }
+    },
+    deslogar : {        
+        color: '#15b6d5',
+        fontSize: 20,
+    },
     
  })
 
