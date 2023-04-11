@@ -16,6 +16,8 @@ export declare global {
         Login: {numero: number};
         Check: {id: number};
         Mapa: {id:number};
+        CadastroAnonimo: {id:number};
+        LoginAnonimo: {numero: number};
        
         
       }

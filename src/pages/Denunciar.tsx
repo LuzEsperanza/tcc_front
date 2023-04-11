@@ -121,7 +121,7 @@ const Denunciar : React.FC = () => {
             } as any);
             console.log(data)
             const config = {     
-                headers: { 'content-type': 'multipart/form-data' }
+                headers: { 'content-type': 'multipart/form-data'}
             }
            
             await api.post('/foto', data, config );

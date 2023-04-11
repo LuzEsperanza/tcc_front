@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image,  TouchableOpacity,} from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView ,TouchableOpacity,} from 'react-native';
 import * as AuthSession from 'expo-auth-session';
 import {useNavigation}  from '@react-navigation/native';
-import {useMyContext} from '../context/AuthProvider'
+import {useMyContext} from '../context/AuthProvider';
 import {Ionicons, MaterialIcons, AntDesign} from '@expo/vector-icons';
 
 const Login : React.FC = () => {

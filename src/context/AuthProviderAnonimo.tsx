@@ -1,21 +1,21 @@
 import React,{createContext, useContext, useEffect, useState} from 'react';
 import api from '../services/api'
 
-interface Denunciante{
-  denuncianteID:number;
+interface Anonimo{
+  id:number;
   token: string;
 }
 
 interface IContexto{
-    denunciante:Denunciante | null,
-    logar: (email:string, senha:string)=> Promise<void>;
+    anonimo:Anonimo | null,
+    logar: (codigo:string)=> Promise<void>;
     deslogar(): Promise<void>;
     isLogado:boolean;
   }
   const AuthContext = createContext<IContexto>({} as IContexto);
   
   interface ResponseData{
-    denunciante:Denunciante | null;
+    anonimo:Anonimo | null;
     token: string;
     
   }
@@ -26,24 +26,25 @@ interface IContexto{
   }
   
   export function AuthProvider({children}:IProps){
-    const [denunciante, setDenunciante] = useState<Denunciante | null>(null);
+    const [anonimo, setAnonimo] = useState<Anonimo | null>(null);
    
     
-    async function logar(email:string, senha:string){   
+    async function logar(codigo:string){   
       try {
         const dados ={
-          email, senha
+          codigo
         }
-        const response = await api.post('/denunciante/login', dados);
+        console.log("oi")
+        const response = await api.post('/anonimo/login', codigo);
       
   
-        const {denunciante, token} = response.data as ResponseData;
-        console.log(denunciante.token);
+        const {anonimo, token} = response.data as ResponseData;
+        console.log(anonimo.token);
   
-        api.defaults.headers.common.Authorization = `Bearer ${denunciante.token}`;
+        api.defaults.headers.common.Authorization = `Bearer ${anonimo.token}`;
       
        
-        setDenunciante(denunciante);
+        setAnonimo(anonimo);
       } catch (error) {
         console.log(error);
       }
@@ -51,14 +52,14 @@ interface IContexto{
     
   
     async function deslogar(){
-      setDenunciante(null);
+      setAnonimo(null);
       
     }
   
         
     return (
       <AuthContext.Provider
-        value={{logar,denunciante,deslogar, isLogado:!!denunciante}} 
+        value={{logar,anonimo,deslogar, isLogado:!!anonimo}} 
       >
         {children}
       </AuthContext.Provider>

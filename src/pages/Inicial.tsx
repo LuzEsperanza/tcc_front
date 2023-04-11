@@ -20,7 +20,7 @@ const Inicial : React.FC = () => {
         // })
        
 
-        navigation.navigate('Denunciar')
+        navigation.navigate('CadastroAnonimo')
     }
     function Cadastrar (){
         navigation.navigate('Cadastro')
