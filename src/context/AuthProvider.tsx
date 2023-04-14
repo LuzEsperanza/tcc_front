@@ -9,6 +9,7 @@ interface Denunciante{
 interface IContexto{
     denunciante:Denunciante | null,
     logar: (email:string, senha:string)=> Promise<void>;
+    logarGmail: (token:string)=> Promise<void>;
     deslogar(): Promise<void>;
     isLogado:boolean;
   }
@@ -48,6 +49,16 @@ interface IContexto{
         console.log(error);
       }
     }
+    async function logarGmail(token:string){  
+      try{
+        api.defaults.headers.common.Authorization = `Bearer ${token}`;
+        setDenunciante(denunciante);
+        // console.log(denunciante)
+
+      }catch (error) {
+        console.log(error);
+      }
+    }
     
   
     async function deslogar(){
@@ -58,7 +69,7 @@ interface IContexto{
         
     return (
       <AuthContext.Provider
-        value={{logar,denunciante,deslogar, isLogado:!!denunciante}} 
+        value={{logar,logarGmail, denunciante,deslogar, isLogado:!!denunciante}} 
       >
         {children}
       </AuthContext.Provider>

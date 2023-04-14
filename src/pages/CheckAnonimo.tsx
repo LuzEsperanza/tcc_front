@@ -28,8 +28,6 @@ const data = [
 
     { id: 7, txt: 'Queimadas', isChecked: false },
 
-    { id: 8, txt: 'Outro', isChecked: false },
-
 ];
 
 
@@ -110,8 +108,7 @@ const App = () => {
 
     }
     const route = useRoute();
-    
-
+    //Pegar id de Anonimo
     const id = route.params
     // console.log(id)
     // const crimes = Array(5).fill(0)

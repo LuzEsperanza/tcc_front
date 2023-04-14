@@ -2,9 +2,15 @@ import React , {useState} from 'react';
 import { View, StyleSheet, Dimensions, Text, Pressable } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
-
+import {useRoute}  from '@react-navigation/native';
+interface Anonimo{
+    id : number;
+   
+}
 const Mapa : React.FC = () => {
     const navigation = useNavigation();
+    const route = useRoute();
+    const anonimo = route.params as Anonimo;
    
     const [position, setPosition] = useState({
         latitude: -6.886532,
@@ -14,7 +20,11 @@ const Mapa : React.FC = () => {
     });
 
     
-    function handlerDenunciar(){      
+    function handlerDenunciar(){ 
+        const id = anonimo.id;
+        console.log(id)
+        console.log("ola")
+
         navigation.navigate('Denunciar', {position})
     }
 

@@ -4,22 +4,38 @@ import {useNavigation}  from '@react-navigation/native';
 import * as AuthSession from 'expo-auth-session';
 import {useMyContext} from '../context/AuthProviderAnonimo';
 import api from '../services/api';
+interface Anonimo{
+    id:number;
+    token: string;
+}
+interface ResponseData{
+    anonimo:Anonimo | null;
+    token: string;
+    
+}
+ 
+  
 const LoginAnonimo : React.FC = () => {
    
     const navigation = useNavigation();
     const [codigo, setCodigo] = useState(String);
     const {logar} = useMyContext();
-    type AuthResponse = {
-        type: string;
-        params: {
-          access_token: string;
-        }
-      }
+    const [anonimo, setAnonimo] = useState<Anonimo | null>(null);
 
     async function handleSingIn (){
         console.log(codigo)
         try {            
-            const response = await api.post('/anonimo/login', {codigo});            
+            const response = await api.post('/anonimo/login', {codigo});
+            const {anonimo, token} = response.data as ResponseData;
+            console.log(anonimo.token);
+            setAnonimo(anonimo);
+            const id = anonimo.id 
+            console.log(id)
+            navigation.navigate('PrincipalAnonimo', {id})
+      
+            // console.log(response.data)
+            // não está dando certo
+            // await logar(codigo);            
         } catch (error) {
             console.log(error);
         }     

@@ -10,10 +10,13 @@ const Login : React.FC = () => {
     const [validEmail, setValidEmail] = useState(false);
     const [senha, setSenha] = useState(String);
     const [error, setError] = useState('');
+    const [erro, setErro] = useState('');
 
     const [hidePass, setHidePass] = useState(true)
     const navigation = useNavigation();
     const {logar} = useMyContext();
+    const {logarGmail} = useMyContext();
+   
 
     type AuthResponse = {
         type: string;
@@ -40,8 +43,16 @@ const Login : React.FC = () => {
             setError('Senha muito pequena!')
         }
         else{
-            await logar(email, senha);
-            navigation.navigate('Principal');
+            try {
+                const response = await logar(email, senha);
+                navigation.navigate('Principal');
+                
+            } catch (error) {
+                setErro('Erro ao logar')
+                console.log(error);
+                
+            }
+            
 
         }
           
@@ -49,16 +60,30 @@ const Login : React.FC = () => {
         
     }
     async function handleSingIn (){
-        const CLIENT_ID = '602969099493-c5a9bhs7flc50ji66hbkb4d2tpdc43sb.apps.googleusercontent.com';
-        const REDIRECT_URI = 'https://auth.expo.io/@luzesperanza/teste';
-        const RESPONSE_YPE = 'token';
-        const SCOPE = encodeURI('profile email');
+        try{
+            const CLIENT_ID = '602969099493-c5a9bhs7flc50ji66hbkb4d2tpdc43sb.apps.googleusercontent.com';
+            const REDIRECT_URI = 'https://auth.expo.io/@luzesperanza/teste';
+            const RESPONSE_YPE = 'token';
+            const SCOPE = encodeURI('profile email');
 
-        const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_YPE}&scope=${SCOPE}`;
-        const {type, params} = await AuthSession.
-        startAsync({authUrl}) as AuthResponse;
-        console.log({token: params.access_token})
-      
+            const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_YPE}&scope=${SCOPE}`;
+            const {type, params} = await AuthSession.
+            startAsync({authUrl}) as AuthResponse;
+            // if (type == "success"){
+            //     const response = await fetch(`https://www.googleleapis.com/oauth2/v2/userinfo?alt=json&access_token=${params.access_token}`);
+            //     const user = await response.json();
+            //     console.log(user)
+
+            // }
+            const token = params.access_token;
+            await logarGmail(token)
+        
+            console.log({token: params.access_token})
+
+        }catch(error){
+            console.log(error)
+        }
+        
         
     }
     return (
@@ -112,6 +137,11 @@ const Login : React.FC = () => {
                 <AntDesign name="google" size={24} color="black" />
                 <Text style={styles.buttonText}>Continuar pelo google</Text>
             </Pressable>
+            {erro ? (
+                <Text style={styles.textError}>
+                    {erro}
+                </Text>
+            ) : null} 
         </ScrollView>
       
     );

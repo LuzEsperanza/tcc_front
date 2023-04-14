@@ -11,6 +11,9 @@ const Inicial : React.FC = () => {
     function Login (){
         navigation.navigate('Login')
     }
+    function LoginAnonimo (){
+        navigation.navigate('LoginAnonimo')
+    }
     async function Anonimo (){
         // const denunciante = await api.post('/anonimo').then((response) =>
         // {
@@ -37,8 +40,11 @@ const Inicial : React.FC = () => {
             <Pressable  style={styles.tenhoConta} onPress={()=>Login()}>
                 <Text style={styles.buttonText}>Tenho conta</Text>
             </Pressable>
+            <Pressable  style={styles.tenhoContaAnonima} onPress={()=>LoginAnonimo()}>
+                <Text style={styles.buttonText}>Tenho conta anonima</Text>
+            </Pressable>
             <Pressable  style={styles.anonimamente} onPress={()=>Anonimo()}>
-                <Text style={styles.buttonText}>Anonimamente</Text>
+                <Text style={styles.buttonTextAnonimo}>Anonimamente</Text>
             </Pressable>
             <Pressable  style={styles.cadastro} onPress={()=>Cadastrar()}>
                 <Text style={styles.buttonTextCadastro}>Cadastre-se</Text>
@@ -50,7 +56,7 @@ const Inicial : React.FC = () => {
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        backgroundColor: '#F0F8FF',
+        backgroundColor: '#ADD8E6',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -79,9 +85,25 @@ const styles = StyleSheet.create({
     },
     tenhoConta : {
         padding: 2,
-        backgroundColor: '#5F9EA0',
+        backgroundColor: '#15b6d5',
         borderWidth: 4,
-        borderColor: '#5F9EA0',
+        borderColor: '#15b6d5',
+        paddingTop: 6,
+        paddingBottom: 6,
+        paddingLeft: 6,
+        paddingRight: 6,
+        borderRadius: 5,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop : 9,
+        marginBottom : 8
+    },
+    tenhoContaAnonima : {
+        padding: 2,
+        backgroundColor: '#ADD8E6',
+        borderWidth: 4,
+        borderColor: '#15b6d5',
         paddingTop: 6,
         paddingBottom: 6,
         paddingLeft: 6,
@@ -95,9 +117,9 @@ const styles = StyleSheet.create({
     },
     anonimamente : {
         padding: 2,
-        backgroundColor: '#5F9EA0',
+        backgroundColor: '#000000',
         borderWidth: 4,
-        borderColor: '#006400',
+        borderColor: '#000000',
         paddingTop: 6,
         paddingBottom: 6,
         paddingLeft: 8,
@@ -111,7 +133,7 @@ const styles = StyleSheet.create({
     },
     cadastro: {
         padding: 2,
-        backgroundColor: '#F0F8FF',
+        backgroundColor: '#ADD8E6',
         borderBottomWidth: 2,
         borderColor: '#1C1C1C',
         flexDirection: 'row',
@@ -124,6 +146,11 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#000000'
+    },
+    buttonTextAnonimo : {
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        color: '#15b6d5'
     },
     buttonTextCadastro : {
         fontFamily: 'Roboto',

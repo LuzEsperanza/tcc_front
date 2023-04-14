@@ -18,7 +18,17 @@ export declare global {
         Mapa: {id:number};
         CadastroAnonimo: {id:number};
         LoginAnonimo: {numero: number};
-       
+        PrincipalAnonimo: {id: number};
+        MapaAnonimo: {id:number};
+        DenunciarAnonimo: {
+          position: {
+            latitude:number;
+            longitude:number;
+            latitudeDelta:number;
+            longitudeDelta:number
+          }
+        };
+        CheckAnonimo: {id: number};       
         
       }
     }

@@ -1,4 +1,5 @@
 import {useMyContext} from '../context/AuthProvider';
+
 import RoutesPrivado from './routes.privado';
 import RoutePublico from './routes.publico';
 import {NavigationContainer} from '@react-navigation/native'

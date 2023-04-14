@@ -7,8 +7,11 @@ import CadastroAnonimo from '../pages/CadastroAnonimo';
 import Login from '../pages/Login';
 import LoginAnonimo from '../pages/LoginAnonimo';
 import Header from '../components/Header';
-
-
+import HeaderPA from '../components/HeaderPA';
+import PrincipalAnonimo from '../pages/PrincipalAnonimo';
+import MapaAnonimo from '../pages/MapaAnonimo';
+import DenunciarAnonimo from '../pages/DenunciarAnonimo';
+import CheckAnonimo from '../pages/CheckAnonimo';
 
 const {Navigator, Screen} = createNativeStackNavigator();
 const RoutesPublico : React.FC = () => {
@@ -57,6 +60,43 @@ const RoutesPublico : React.FC = () => {
 
                 }}
                 />
+             <Screen 
+                name="PrincipalAnonimo"
+                component={PrincipalAnonimo}
+                options ={{
+                    headerShown:true,
+                    header: ()=><HeaderPA  title='Principal'/>
+
+                }}
+                />
+            <Screen 
+                name="MapaAnonimo"
+                component={MapaAnonimo}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Selecione um local'/>
+
+                }}
+                />
+            <Screen 
+                name="Denunciar"
+                component={DenunciarAnonimo}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Denunciar'/>
+
+                }}
+                />
+             <Screen 
+                name="Check"
+                component={CheckAnonimo}
+                options ={{
+                    headerShown:true,
+                    header: ()=><Header  title='Selecione um possivel delito'/>
+
+                }}
+                />
+            
                 
         </Navigator>
         

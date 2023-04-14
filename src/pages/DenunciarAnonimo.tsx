@@ -23,7 +23,7 @@ interface ParamsPositions{
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
-    
+    //  mudar para anonimo
     const {denunciante} = useMyContext();
    
     const navigation = useNavigation();
@@ -50,7 +50,8 @@ const Denunciar : React.FC = () => {
     const handleConfirm = (date) => {
       setSelectedDate(date);
       hideDatePicker();
-    };   
+    };
+   
         
     const data =selectedDate.toISOString()
     let horarioAbordagem = data.substring(11,19);
@@ -83,10 +84,13 @@ const Denunciar : React.FC = () => {
     }
 
     async function handleNextStep (){
-       const identificado = denunciante.denuncianteID;
+         /**
+          * Mudar para anonimo
+          */
+       const anonima = denunciante.denuncianteID;
         // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
-        const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+        const informacao = await api.post('/denuncia', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           
@@ -108,7 +112,7 @@ const Denunciar : React.FC = () => {
             console.log(data)
             const config = {     
                 headers: { 'content-type': 'multipart/form-data'}
-            };
+            }
            
             await api.post('/foto', data, config );
             
@@ -117,7 +121,8 @@ const Denunciar : React.FC = () => {
               
         navigation.navigate('Check', informacao.id);        
         
-    };    
+    }    
+    
    
     return (
         <ScrollView style={styles.container}>
@@ -152,8 +157,8 @@ const Denunciar : React.FC = () => {
             />   
               
             <Text  style={styles.title}>Descrição</Text>
-            <TextInput multiline style={[styles.input,{height:110}]} 
-            value={descricao} onChangeText={setDescricao}/>           
+            <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
+           
            
             <Text  style={styles.title}>Insira fotos</Text>
 
@@ -162,15 +167,19 @@ const Denunciar : React.FC = () => {
                 <Pressable style={styles.adicionar} onPress={handleSelectImages}>
                    
                    <Entypo name="plus" size={24} color="black"/>
-                </Pressable>    
+                </Pressable>
+            
+            
            
-                {imagesPath.map(imgUri =>                    
-                    <Image style={styles.image} key={imgUri} source={{uri:imgUri}}/>
-                )}
+                {imagesPath.map(imgUri =>
+                    
+                    <Image style={styles.image} key={imgUri} source={{uri:imgUri}}/>)}
 
             </ScrollView> 
 
-            </View>     
+            </View>
+               
+            
             
             <Pressable  style={styles.cadastro} onPress={handleNextStep}>
                 <Text style={styles.buttonText}>Próximo</Text>
@@ -185,7 +194,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         marginHorizontal: 12,
-        paddingTop:24        
+        paddingTop:24
+        
     },
     title : {
         fontWeight: 'bold',
@@ -217,6 +227,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderTopRightRadius: 5,
         borderBottomRightRadius: 5,
+
     },
     hora: {
         flex: 1,
@@ -251,7 +262,8 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         textAlignVertical: 'top'
   
-    },   
+    },
+   
     cadastro: {        
         backgroundColor: '#000000',
         borderWidth: 4,
@@ -293,17 +305,26 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         borderColor: 'gray',
     },
+    
+    
+
     caixa: {
+
         width: '90%',
         height: 120,
         justifyContent: 'center',
         borderWidth: 1.4,
         padding: 5,
         borderRadius: 10,
+       
+
     },
     text: {
+
         textAlign: 'center',
+
         fontWeight: 'bold',
+
     },
     
     
