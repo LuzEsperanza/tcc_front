@@ -103,7 +103,7 @@ const Principal : React.FC = () => {
 const styles = StyleSheet.create({
     container : {
         flex: 1,
-        backgroundColor: '#b0e0e6',       
+        backgroundColor: '#dde3f0',       
     },
     titulo : {
         fontWeight: 'bold',
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 24,
         marginBottom: 16,
         textAlignVertical: 'top',
-        backgroundColor: '#C4C4C4',
+        backgroundColor: '#e5e5e5',
         borderColor: '#A9A9A9',
         marginLeft: 20
     },

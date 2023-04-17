@@ -55,14 +55,14 @@ const Header: React.FC<HeaderProps> = () => {
 }
 const styles = StyleSheet.create({
     container : {
-        padding: 15,
-        backgroundColor: '#f9fafc',
+        padding: 5,
+        backgroundColor: '#B0C4DE',
         borderBottomWidth: 1,
         borderColor: '#dde3f0',
-        paddingTop: 44,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: "10%",
     },
     title : {        
         color: '#000000',
@@ -82,8 +82,7 @@ const styles = StyleSheet.create({
         alignContent:'center',
         marginTop: 5  
     },
-    deslogar : {        
-        
+    deslogar : {     
         height: 40,
         width: 100,
         borderRadius: 10,

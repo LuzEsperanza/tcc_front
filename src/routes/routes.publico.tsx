@@ -79,7 +79,7 @@ const RoutesPublico : React.FC = () => {
                 }}
                 />
             <Screen 
-                name="Denunciar"
+                name="DenunciarAnonimo"
                 component={DenunciarAnonimo}
                 options ={{
                     headerShown:true,
@@ -88,7 +88,7 @@ const RoutesPublico : React.FC = () => {
                 }}
                 />
              <Screen 
-                name="Check"
+                name="CheckAnonimo"
                 component={CheckAnonimo}
                 options ={{
                     headerShown:true,

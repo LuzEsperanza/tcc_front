@@ -11,6 +11,12 @@ import Constants from 'expo-constants';
 import {useNavigation, useRoute}  from '@react-navigation/native';
 
 import api from '../services/api';
+interface Anonimo{
+    
+    anonima: number;
+    denuncia:number
+   
+}
 
 const data = [
 
@@ -109,8 +115,12 @@ const App = () => {
     }
     const route = useRoute();
     //Pegar id de Anonimo
-    const id = route.params
-    // console.log(id)
+    const informacao= route.params as Anonimo
+    const denuncia = informacao.denuncia
+    console.log(denuncia)
+    
+    const id = informacao.anonima
+    console.log(id)    
     // const crimes = Array(5).fill(0)
     const [crimes, setCrimes] = useState<string[]>([]);
     var delito = [];
@@ -134,9 +144,10 @@ const App = () => {
        
         })
         delito.forEach( d =>{
-            salvar(id, d)
+            salvar(denuncia, d)
         })
-        navigation.navigate('Principal')
+        console.log("oi")
+        navigation.navigate('PrincipalAnonimo',{id})
          
     } 
     

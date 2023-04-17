@@ -1,8 +1,7 @@
 import React , {useState} from 'react';
 import { View, StyleSheet, Dimensions, Text, Pressable } from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
-import { useNavigation } from '@react-navigation/native';
-import {useRoute}  from '@react-navigation/native';
+import { useNavigation,useRoute } from '@react-navigation/native';
 interface Anonimo{
     id : number;
    
@@ -25,7 +24,7 @@ const Mapa : React.FC = () => {
         console.log(id)
         console.log("ola")
 
-        navigation.navigate('Denunciar', {position})
+        navigation.navigate('DenunciarAnonimo', {position,id})
     }
 
     return(

@@ -10,6 +10,7 @@ export declare global {
             latitudeDelta:number;
             longitudeDelta:number
           }
+          
         };
         Inicial: undefined;
         Usuario:  {id: number};
@@ -26,9 +27,12 @@ export declare global {
             longitude:number;
             latitudeDelta:number;
             longitudeDelta:number
-          }
+          };
+          id: number
         };
-        CheckAnonimo: {id: number};       
+        CheckAnonimo: {denuncia: number;
+        anonima:number
+        };       
         
       }
     }

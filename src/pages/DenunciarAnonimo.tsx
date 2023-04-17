@@ -7,6 +7,10 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {useMyContext} from '../context/AuthProvider';
 import {Entypo} from '@expo/vector-icons';
 
+interface Anonimo{
+    id : number;
+   
+}
 interface Positions {
     latitude:number;
     longitude:number;
@@ -23,8 +27,8 @@ interface ParamsPositions{
 const Denunciar : React.FC = () => {
     
     const route = useRoute();
-    //  mudar para anonimo
-    const {denunciante} = useMyContext();
+    const anonimo = route.params as Anonimo;
+    console.log(anonimo)    
    
     const navigation = useNavigation();
     const paramsPositiom = route.params as ParamsPositions;
@@ -87,10 +91,10 @@ const Denunciar : React.FC = () => {
          /**
           * Mudar para anonimo
           */
-       const anonima = denunciante.denuncianteID;
+        const anonima = anonimo.id
         // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
-        const informacao = await api.post('/denuncia', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+        const informacao = await api.post('/denuncia/anonimo', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
            return response.data
           
@@ -114,12 +118,12 @@ const Denunciar : React.FC = () => {
                 headers: { 'content-type': 'multipart/form-data'}
             }
            
-            await api.post('/foto', data, config );
+            await api.post('/foto/anonimo', data, config );
             
         
         })
               
-        navigation.navigate('Check', informacao.id);        
+        navigation.navigate('CheckAnonimo', {denuncia, anonima});        
         
     }    
     
