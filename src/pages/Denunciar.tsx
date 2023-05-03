@@ -30,6 +30,7 @@ const Denunciar : React.FC = () => {
     const paramsPositiom = route.params as ParamsPositions;
    
     const [descricao, setDescricao] = useState('');
+    const [ValiDescricao, setValiDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const latitude = paramsPositiom.position.latitude
@@ -85,37 +86,39 @@ const Denunciar : React.FC = () => {
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
         // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
-        
-        const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
-        {
-           return response.data
-          
-           
-        })
-        const data = new FormData();
-        // console.log(informacao.id);
-        const denuncia = informacao.id
+        if (!descricao.trim()){
+            setValiDescricao('Escreva uma descrição do ocorrido')
+        }
+        else{
+            const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+            {
+                return response.data           
+            })
+            const data = new FormData();
+            // console.log(informacao.id);
+            const denuncia = informacao.id
 
-        data.append('denuncia', informacao.id);       
+            data.append('denuncia', informacao.id);       
         
-        imagesPath.forEach( async (imageURI, index) =>{
+            imagesPath.forEach( async (imageURI, index) =>{
           
-            data.append('images', {
-                name: `image${index}.jpg`,
-                type: 'image/jpg',
-                uri: imageURI,
-            } as any);
-            console.log(data)
-            const config = {     
-                headers: { 'content-type': 'multipart/form-data'}
-            };
+                data.append('images', {
+                    name: `image${index}.jpg`,
+                    type: 'image/jpg',
+                    uri: imageURI,
+                } as any);
+                console.log(data)
+                const config = {     
+                    headers: { 'content-type': 'multipart/form-data'}
+                };
            
-            await api.post('/foto', data, config );
-            
-        
-        })
+                await api.post('/foto', data, config );
+            })
               
-        navigation.navigate('Check', informacao.id);        
+            navigation.navigate('Check', informacao.id);  
+
+        }
+              
         
     };    
    
@@ -153,7 +156,10 @@ const Denunciar : React.FC = () => {
               
             <Text  style={styles.title}>Descrição</Text>
             <TextInput multiline style={[styles.input,{height:110}]} 
-            value={descricao} onChangeText={setDescricao}/>           
+            value={descricao} onChangeText={setDescricao}/> 
+            {ValiDescricao ? 
+            (<Text style={styles.textError}>{ValiDescricao}</Text>) 
+            : (<Text></Text>)}          
            
             <Text  style={styles.title}>Insira fotos</Text>
 
@@ -222,8 +228,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         width: "90%",
-        height: 54,
-       
+        height: 54,       
     },
     local : {
         fontWeight: 'bold',
@@ -249,8 +254,7 @@ const styles = StyleSheet.create({
         paddingVertical: 18,
         paddingHorizontal: 24,
         marginBottom: 16,
-        textAlignVertical: 'top'
-  
+        textAlignVertical: 'top'  
     },   
     cadastro: {        
         backgroundColor: '#000000',
@@ -272,7 +276,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#f9fafc'
-
     },
     adicionar : {
         alignItems: 'center',
@@ -305,10 +308,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontWeight: 'bold',
     },
-    
-    
-    
-    
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 13,
+        marginTop: 0.5,
+        color: '#8B0000',
+    }
+     
  })
 
 

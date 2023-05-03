@@ -4,7 +4,8 @@ import * as AuthSession from 'expo-auth-session';
 import {useNavigation}  from '@react-navigation/native';
 import {useMyContext} from '../context/AuthProvider';
 import {Ionicons, MaterialIcons, AntDesign} from '@expo/vector-icons';
-
+import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import api from '../services/api';
 const Login : React.FC = () => {
     const [email, setEmail] = useState(String);
     const [validEmail, setValidEmail] = useState(false);
@@ -16,6 +17,8 @@ const Login : React.FC = () => {
     const navigation = useNavigation();
     const {logar} = useMyContext();
     const {logarGmail} = useMyContext();
+
+    
    
 
     type AuthResponse = {
@@ -69,16 +72,23 @@ const Login : React.FC = () => {
             const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_YPE}&scope=${SCOPE}`;
             const {type, params} = await AuthSession.
             startAsync({authUrl}) as AuthResponse;
-            // if (type == "success"){
-            //     const response = await fetch(`https://www.googleleapis.com/oauth2/v2/userinfo?alt=json&access_token=${params.access_token}`);
+            const token = params.access_token;
+            console.log(token)
+            const response = await api.post('/denunciante/', {token});
+            console.log(response)
+            // if (type === 'success'){
+            //     const response = await fetch(`https://www.googleleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}}`);
             //     const user = await response.json();
             //     console.log(user)
 
             // }
-            const token = params.access_token;
-            await logarGmail(token)
+            // const token = params.access_token;
+            // await logarGmail(token)
         
-            console.log({token: params.access_token})
+            // console.log({token: params.access_token})
+            // await GoogleSignin.signIn();
+
+            
 
         }catch(error){
             console.log(error)

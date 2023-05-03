@@ -32,8 +32,7 @@ const Usuario : React.FC = () => {
         <ScrollView style={styles.container}>
            
                 <View  >
-                    <Image  style={styles.tinyLogo} source={require('../images/images.png')}/>
-
+                   
                     <TextInput 
                         style={styles.input} 
                         placeholder="Email"

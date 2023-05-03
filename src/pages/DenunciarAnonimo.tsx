@@ -34,6 +34,7 @@ const Denunciar : React.FC = () => {
     const paramsPositiom = route.params as ParamsPositions;
    
     const [descricao, setDescricao] = useState('');
+    const [ValiDescricao, setValiDescricao] = useState('');
     const [rua, setRua] = useState('');
     const [numero, setNumero] = useState('');
     const latitude = paramsPositiom.position.latitude
@@ -42,7 +43,7 @@ const Denunciar : React.FC = () => {
     const [datePickerVisible, setDatePickerVisible] = useState(false);
     const [informacaoDenunciado, setInformacao] = useState('');
     const [imagesPath, setImagesPath] = useState<string[]>([]);
-    
+
     const showDatePicker = () => {
       setDatePickerVisible(true);
     };
@@ -88,11 +89,13 @@ const Denunciar : React.FC = () => {
     }
 
     async function handleNextStep (){
-         /**
-          * Mudar para anonimo
-          */
+       
         const anonima = anonimo.id
-        // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
+        if (!descricao.trim()){
+            setValiDescricao('Escreva uma descrição do ocorrido')
+        }
+        else{
+            // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
         const informacao = await api.post('/denuncia/anonimo', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
@@ -123,7 +126,10 @@ const Denunciar : React.FC = () => {
         
         })
               
-        navigation.navigate('CheckAnonimo', {denuncia, anonima});        
+        navigation.navigate('CheckAnonimo', {denuncia, anonima}); 
+
+        }
+               
         
     }    
     
@@ -161,8 +167,11 @@ const Denunciar : React.FC = () => {
             />   
               
             <Text  style={styles.title}>Descrição</Text>
-            <TextInput multiline style={[styles.input,{height:110}]} value={descricao} onChangeText={setDescricao}/>
-           
+            <TextInput multiline style={[styles.input,{height:110}]} 
+            value={descricao} onChangeText={(text)=>setDescricao(text)}/>
+            {ValiDescricao ? 
+            (<Text style={styles.textError}>{ValiDescricao}</Text>) 
+            : (<Text></Text>)}
            
             <Text  style={styles.title}>Insira fotos</Text>
 
@@ -309,30 +318,24 @@ const styles = StyleSheet.create({
         marginLeft: 5,
         borderColor: 'gray',
     },
-    
-    
-
     caixa: {
-
         width: '90%',
         height: 120,
         justifyContent: 'center',
         borderWidth: 1.4,
         padding: 5,
         borderRadius: 10,
-       
-
     },
     text: {
-
         textAlign: 'center',
-
         fontWeight: 'bold',
-
     },
-    
-    
-    
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 13,
+        marginTop: 0.5,
+        color: '#8B0000',
+    }  
     
  })
 
