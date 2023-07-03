@@ -15,35 +15,21 @@ const Usuario : React.FC = () => {
     const {denunciante} = useMyContext();
     const [email, setEmail] = useState(String);
     const [senha, setSenha] = useState(String);
-    const [nome, setNome] = useState(String);
-    
-    const navigation = useNavigation();
-   
-
        
+    const navigation = useNavigation();
+
     async function Atualizar (){
         const consulta = '/denunciante/';
         const teste = consulta.concat(denunciante.denuncianteID.toString())
-        await api.patch(teste, {nome, email, senha});
+        await api.patch(teste, {email, senha});
 
         navigation.navigate('Principal')
     }
     return (
         <ScrollView style={styles.container}>
            
-                <View  >
+                <View>
                    
-                    <TextInput 
-                        style={styles.input} 
-                        placeholder="Email"
-                        keyboardType="email-address"
-                        onChangeText={setEmail}/>
-           
-                    <TextInput 
-                        placeholder="Nome" 
-                        style={styles.input}
-                        onChangeText={setNome}/>
-
                     <TextInput
                         style={styles.input} 
                         placeholder="Senha" 

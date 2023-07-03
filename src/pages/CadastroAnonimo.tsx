@@ -2,16 +2,32 @@ import React, { useState }  from 'react';
 import { View, StyleSheet, Text,Pressable,ScrollView, Button, TouchableHighlight,TouchableOpacity, ClipboardStatic, TextInput } from 'react-native';
 import {useNavigation}  from '@react-navigation/native';
 import api from '../services/api';
+import {AntDesign, Ionicons, MaterialIcons} from '@expo/vector-icons';
 import uuid from 'react-native-uuid';
 import Clipboard from '@react-native-community/clipboard';
+
 const CadastroAnonimo : React.FC = () => { 
     const navigation = useNavigation();
-    
+    const [codigo, setCodigo] = useState(String);
     const [codi, setCod] = useState('');
+    const [validSenha, setValidSenha] = useState(false);
+    const [hidePass, setHidePass] = useState(true);
+
+    const handleValidSenha= (text) => {
+        let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+        
+        setCodigo(text)
+        if(re.test(text)){
+            setValidSenha(false)
+        }
+        else{
+            setValidSenha(true)
+        }
+
+    } 
       
     async function handleCadastro (){
-        const cod = uuid.v4();
-        const codigo = cod.toString();               
+                       
         const anonimo = await api.post('/anonimo/',{codigo})
         setCod(anonimo.data.codigo)
        console.log(anonimo.data.codigo)       
@@ -26,9 +42,32 @@ const CadastroAnonimo : React.FC = () => {
         <ScrollView style={styles.container}>
             <View>
                  <Text style={styles.texto}>
-                O código gerado deve ser usado para fazer login,
-                 onde será possível acompanhar a denúncia e denunciar
+                    Crie uma senha de mínimo 8 dígitos.
+                    Incluindo  caracteres especiais, números e letras maiúsculas e minúsculas
                 </Text>
+                <View style={styles.inputArea}>
+                <TextInput
+                    style={styles.input} 
+                    placeholder="Senha" 
+                    secureTextEntry={hidePass}
+                    onChangeText={(text)=>handleValidSenha(text)}
+                />
+                <TouchableOpacity onPress={()=>setHidePass(!hidePass)}>
+                   {hidePass ? 
+                   <Ionicons  name="eye" color="black" size={25}/>
+                   :
+                   <Ionicons  name="eye-off" color="black" size={25}/>
+                   }
+                    
+                </TouchableOpacity>
+
+           </View>
+           {validSenha ? 
+            (<Text>Senha fraca</Text>) 
+            :
+             (<Text></Text>)}
+                
+                
                 
 
             </View>
@@ -38,10 +77,6 @@ const CadastroAnonimo : React.FC = () => {
                 <Text style={styles.buttonText}>Cadastrar</Text>
             </Pressable>
                       
-            <TextInput
-                style={styles.input}
-                placeholder={codi} 
-                value={codi}/>
             
             <Pressable  style={styles.cadastro} onPress={()=>handleNextLogin()}>
                 <Text style={styles.buttonText}>Login</Text>
@@ -60,23 +95,22 @@ const styles = StyleSheet.create({
         
     },
     texto :{
-        textAlign: 'center',
+        textAlign: 'left',
         marginTop : 80,
         marginRight: 15,
         fontSize: 19
 
     },
     input: {
+        height: 50,       
+        width: '85%',        
+        padding: 8,
+        borderRadius: 10,
         flexDirection: 'row',
-        width: '90%',
-        backgroundColor: '#FFFFFF',
-        borderRadius: 5,
-        height: 50,
+        justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 25,
-        borderColor: '#121212',
-        borderWidth: 2,
-        textAlign: 'center'
+        color: 'black',       
+        fontSize:18,    
     },
     cadastro: {        
         backgroundColor: '#000000',
@@ -91,9 +125,7 @@ const styles = StyleSheet.create({
         width: 200,
         justifyContent: 'center',
         padding: 10,
-        marginLeft: 80,
-       
-        
+        marginLeft: 80,        
     },
     buttonText : {
         fontFamily: 'Roboto',
@@ -104,7 +136,18 @@ const styles = StyleSheet.create({
     copiedText: {
         marginTop: 10,
         color: 'red',
-      },
+    },
+    inputArea: {
+        flexDirection: 'row',
+        width: '90%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        height: 50,
+        alignItems: 'center',
+        marginTop: 25,
+        borderColor: '#121212',
+        borderWidth: 2,
+    },
     
     
  })

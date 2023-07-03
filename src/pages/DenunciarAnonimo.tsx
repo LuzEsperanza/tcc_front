@@ -99,8 +99,7 @@ const Denunciar : React.FC = () => {
         
         const informacao = await api.post('/denuncia/anonimo', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
         {
-           return response.data
-          
+           return response.data         
            
         })
         const data = new FormData();
@@ -138,7 +137,7 @@ const Denunciar : React.FC = () => {
         <ScrollView style={styles.container}>
             
             <Text  style={styles.title}>Informações dos possiveis suspeitos</Text>
-            <TextInput placeholder='Ex: descrição física, onde reside, nome' multiline style={[styles.input,{height:110}]} 
+            <TextInput placeholder='Ex: descrição física, onde reside, nome, onde foi visto' multiline style={[styles.input,{height:110}]} 
             value={informacaoDenunciado} onChangeText={setInformacao}/>
 
             <Text style={styles.local}>Local do ocorrido</Text>
@@ -173,16 +172,14 @@ const Denunciar : React.FC = () => {
             (<Text style={styles.textError}>{ValiDescricao}</Text>) 
             : (<Text></Text>)}
            
-            <Text  style={styles.title}>Insira fotos</Text>
+            <Text  style={styles.title}>Insira fotos da galeria</Text>
 
             <View style={styles.caixa}>
                 <ScrollView horizontal={true}>
                 <Pressable style={styles.adicionar} onPress={handleSelectImages}>
                    
                    <Entypo name="plus" size={24} color="black"/>
-                </Pressable>
-            
-            
+                </Pressable>     
            
                 {imagesPath.map(imgUri =>
                     

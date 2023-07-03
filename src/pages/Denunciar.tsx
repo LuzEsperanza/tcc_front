@@ -86,10 +86,10 @@ const Denunciar : React.FC = () => {
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
         // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
-        if (!descricao.trim()){
-            setValiDescricao('Escreva uma descrição do ocorrido')
-        }
-        else{
+        // if (!descricao.trim()){
+        //     setValiDescricao('Escreva uma descrição do ocorrido')
+        // }
+        // else{
             const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
             {
                 return response.data           
@@ -117,7 +117,7 @@ const Denunciar : React.FC = () => {
               
             navigation.navigate('Check', informacao.id);  
 
-        }
+        // }
               
         
     };    
@@ -126,7 +126,7 @@ const Denunciar : React.FC = () => {
         <ScrollView style={styles.container}>
             
             <Text  style={styles.title}>Informações dos possiveis suspeitos</Text>
-            <TextInput placeholder='Ex: descrição física, onde reside, nome' multiline style={[styles.input,{height:110}]} 
+            <TextInput placeholder='Ex: descrição física, onde reside, nome, onde foi visto' multiline style={[styles.input,{height:110}]} 
             value={informacaoDenunciado} onChangeText={setInformacao}/>
 
             <Text style={styles.local}>Local do ocorrido</Text>
@@ -161,7 +161,7 @@ const Denunciar : React.FC = () => {
             (<Text style={styles.textError}>{ValiDescricao}</Text>) 
             : (<Text></Text>)}          
            
-            <Text  style={styles.title}>Insira fotos</Text>
+            <Text  style={styles.title}>Insira fotos da galeria</Text>
 
             <View style={styles.caixa}>
                 <ScrollView horizontal={true}>

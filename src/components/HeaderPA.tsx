@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Text, Pressable} from 'react-native';
 import {Feather} from '@expo/vector-icons';
 import {useNavigation} from '@react-navigation/native';
-import {useMyContext} from '../context/AuthProvider';
+import {useMyContext} from '../context/AuthProviderAnonimo';
 
 interface HeaderProps {
     title:string;
@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = () => {
     const anonimo = route.params as Anonimo;
     const {deslogar} = useMyContext();
     async function handleNextInicial (){ 
-        await deslogar()       
+        navigation.navigate('LoginAnonimo');      
        
     }
 
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: "10%",
+        marginTop: "8%",
+        
     },
     title : {        
         color: '#000000',

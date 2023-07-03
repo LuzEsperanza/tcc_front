@@ -166,8 +166,6 @@ const styles = StyleSheet.create({
         marginTop: 25,
         borderColor: '#121212',
         borderWidth: 2,
-
-
     },
     input: {
         height: 50,       
@@ -178,11 +176,9 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         color: 'black',       
-        fontSize:18,
-    
+        fontSize:18,    
     },
-    cadastro: {
-        
+    cadastro: {        
         backgroundColor: '#000000',
         borderWidth: 4,
         borderColor: '#000000',
