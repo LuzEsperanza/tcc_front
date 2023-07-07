@@ -60,7 +60,8 @@ const styles = StyleSheet.create({
         borderColor: '#dde3f0',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        top: 0,
     },
     title : {        
         color: '#000000',

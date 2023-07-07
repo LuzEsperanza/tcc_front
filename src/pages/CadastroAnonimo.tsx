@@ -30,13 +30,11 @@ const CadastroAnonimo : React.FC = () => {
                        
         const anonimo = await api.post('/anonimo/',{codigo})
         setCod(anonimo.data.codigo)
-       console.log(anonimo.data.codigo)       
+       console.log(anonimo.data.codigo) 
+       navigation.navigate('LoginAnonimo')      
       
     }
-    async function handleNextLogin (){
-        
-        navigation.navigate('LoginAnonimo')        
-    }
+    
 
     return (
         <ScrollView style={styles.container}>
@@ -78,10 +76,7 @@ const CadastroAnonimo : React.FC = () => {
             </Pressable>
                       
             
-            <Pressable  style={styles.cadastro} onPress={()=>handleNextLogin()}>
-                <Text style={styles.buttonText}>Login</Text>
-            </Pressable>
-               
+            
 
         </ScrollView>
       

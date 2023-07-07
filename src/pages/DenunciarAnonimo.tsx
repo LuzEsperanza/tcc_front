@@ -204,7 +204,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         marginHorizontal: 12,
-        paddingTop:24
+        paddingTop:24,
+        top: "0%"
         
     },
     title : {

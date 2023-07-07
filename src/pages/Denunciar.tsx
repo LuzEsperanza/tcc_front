@@ -107,13 +107,18 @@ const Denunciar : React.FC = () => {
                     type: 'image/jpg',
                     uri: imageURI,
                 } as any);
-                console.log(data)
-                const config = {     
-                    headers: { 'content-type': 'multipart/form-data'}
-                };
+                // console.log(data)
+                
            
-                await api.post('/foto', data, config );
+                
             })
+            const config = {     
+                headers: { 'content-type': 'multipart/form-data'}
+            };
+            await api.post('/foto', data, config );
+            
+            
+            console.log(imagesPath)
               
             navigation.navigate('Check', informacao.id);  
 
@@ -191,7 +196,8 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%",
         marginHorizontal: 12,
-        paddingTop:24        
+        paddingTop:24,
+        marginTop: "0%"       
     },
     title : {
         fontWeight: 'bold',

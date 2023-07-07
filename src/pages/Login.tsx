@@ -12,6 +12,7 @@ const Login : React.FC = () => {
     const [senha, setSenha] = useState(String);
     const [error, setError] = useState('');
     const [erro, setErro] = useState('');
+    
 
     const [hidePass, setHidePass] = useState(true)
     const navigation = useNavigation();
@@ -53,6 +54,7 @@ const Login : React.FC = () => {
             } catch (error) {
                 setErro('Erro ao logar')
                 console.log(error);
+                
                 
             }
             
@@ -142,6 +144,11 @@ const Login : React.FC = () => {
             <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
                 <Text style={styles.text}>Enviar</Text>
             </Pressable>
+            {erro ? (
+                <Text style={styles.textError}>
+                    {erro}
+                </Text>
+            ) : null} 
             <Text style={styles.ou}>Ou</Text>
             <Pressable  style={styles.google} onPress={()=>handleSingIn()}>
                 <AntDesign name="google" size={24} color="black" />
@@ -163,6 +170,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         height: '100%',
         backgroundColor: '#F5F5F5',
+        marginTop: "10%"
         
     },
     inputArea: {

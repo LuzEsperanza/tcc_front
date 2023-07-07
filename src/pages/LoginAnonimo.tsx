@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
         height: '100%',
         backgroundColor: '#F5F5F5',
+        marginTop: "10%"
         
     },
     inputArea: {

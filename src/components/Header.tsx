@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        top: "10%"
+        top: "0%"
     },
     title : {
         fontWeight: 'bold',
