@@ -76,14 +76,14 @@ const Login : React.FC = () => {
             startAsync({authUrl}) as AuthResponse;
             const token = params.access_token;
             console.log(token)
-            const response = await api.post('/denunciante/', {token});
-            console.log(response)
-            // if (type === 'success'){
-            //     const response = await fetch(`https://www.googleleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}}`);
-            //     const user = await response.json();
-            //     console.log(user)
+            // const response = await api.post('/denunciante/', {token});
+            // console.log(response)
+            if (type === 'success'){
+                const response = await fetch(`https://www.googleleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}}`);
+                const user = await response.json();
+                console.log(user)
 
-            // }
+            }
             // const token = params.access_token;
             // await logarGmail(token)
         

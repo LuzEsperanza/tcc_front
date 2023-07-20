@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
         height: 120,
         justifyContent: 'center',
         borderWidth: 1.4,
-        padding: 5,
+        padding: 4,
         borderRadius: 10,
     },
     text: {

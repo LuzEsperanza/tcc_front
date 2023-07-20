@@ -1,9 +1,10 @@
 import React, {useEffect,useState} from 'react';
-import { View, StyleSheet, Text,TextInput, Pressable,ScrollView , Image} from 'react-native';
+import { View, StyleSheet, Text,TextInput, Pressable,ScrollView ,  TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute}  from '@react-navigation/native';
 import {useMyContext} from '../context/AuthProvider';
-import api from '../services/api'
-import AppLoading from 'expo-app-loading';
+import api from '../services/api';
+import {Ionicons} from '@expo/vector-icons';
+
 interface ParamsId{
    id: number;
 }
@@ -13,15 +14,28 @@ interface ParamsId{
 const Usuario : React.FC = () => {
     const route = useRoute();
     const {denunciante} = useMyContext();
-    const [email, setEmail] = useState(String);
     const [senha, setSenha] = useState(String);
+    const [validSenha, setValidSenha] = useState(false);
+    const [hidePass, setHidePass] = useState(true);
        
     const navigation = useNavigation();
+    const handleValidSenha= (text) => {
+        let re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[$*&@#])[0-9a-zA-Z$*&@#]{8,}$/;
+        
+        setSenha(text)
+        if(re.test(text)){
+            setValidSenha(false)
+        }
+        else{
+            setValidSenha(true)
+        }
+
+    } 
 
     async function Atualizar (){
         const consulta = '/denunciante/';
         const teste = consulta.concat(denunciante.denuncianteID.toString())
-        await api.patch(teste, {email, senha});
+        await api.patch(teste, {senha});
 
         navigation.navigate('Principal')
     }
@@ -30,24 +44,33 @@ const Usuario : React.FC = () => {
            
                 <View>
                    
-                    <TextInput
-                        style={styles.input} 
-                        placeholder="Senha" 
-                        secureTextEntry={true}
-                        onChangeText={setSenha}
-                    />                   
+                    <View style={styles.inputArea}>
+                        <TextInput
+                            style={styles.input} 
+                            placeholder="Senha" 
+                            secureTextEntry={hidePass}
+                            onChangeText={(text)=>handleValidSenha(text)}
+                        />
+                        <TouchableOpacity onPress={()=>setHidePass(!hidePass)}>
+                           {hidePass ? 
+                                <Ionicons  name="eye" color="black" size={25}/>
+                                :
+                                <Ionicons  name="eye-off" color="black" size={25}/>
+                            }                    
+                        </TouchableOpacity>
+
+                    </View>
+                    {validSenha ? 
+                        (<Text style={styles.textError}>Senha fraca</Text>) 
+                        :
+                        (<Text></Text>)
+                    }                   
                    
                     <Pressable  style={styles.atualizar} onPress={()=>Atualizar()}>
                         <Text style={styles.text}>Atualizar</Text>
-                    </Pressable>
-
-                    
+                    </Pressable>                    
             
-                </View>           
-            
-
-
-       
+                </View>
 
         </ScrollView>
       
@@ -61,19 +84,27 @@ const styles = StyleSheet.create({
         height: '100%'
         
     },
-    input: {
-        height: 40,
-        margin: 12,
+    inputArea: {
+        flexDirection: 'row',
         width: '90%',
-        borderWidth: 1,
-        padding: 10,
+        backgroundColor: '#FFFFFF',
+        borderRadius: 5,
+        height: 50,
+        alignItems: 'center',
+        marginTop: 25,
+        borderColor: '#121212',
+        borderWidth: 2,
+    },
+    input: {
+        height: 50,       
+        width: '85%',        
+        padding: 8,
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: '#f9fafc',
-        borderColor: '#000000',
-    
+        color: 'black',       
+        fontSize:18,
     },
     
     atualizar: {
@@ -104,6 +135,13 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         fontSize: 20,
         color: '#f9fafc'
+
+    },
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 13,
+        marginTop: 0.5,
+        color: '#8B0000'
 
     },
     tinyLogo: {

@@ -10,7 +10,7 @@ const Cadastro : React.FC = () => {
     const [senha, setSenha] = useState(String);
     const [nome, setNome] = useState(String);
     const [errorNome, setErrorNome] = useState(String);
-    const [hidePass, setHidePass] = useState(true)
+    const [hidePass, setHidePass] = useState(true);
     const [hide, setHide] = useState(true)
     const navigation = useNavigation();
     const [error, setError] = useState('');
