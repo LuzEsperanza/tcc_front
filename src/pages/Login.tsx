@@ -4,6 +4,7 @@ import * as AuthSession from 'expo-auth-session';
 import {useNavigation}  from '@react-navigation/native';
 import {useMyContext} from '../context/AuthProvider';
 import {Ionicons, MaterialIcons, AntDesign} from '@expo/vector-icons';
+
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 import api from '../services/api';
 const Login : React.FC = () => {
@@ -11,17 +12,12 @@ const Login : React.FC = () => {
     const [validEmail, setValidEmail] = useState(false);
     const [senha, setSenha] = useState(String);
     const [error, setError] = useState('');
-    const [erro, setErro] = useState('');
     
-
     const [hidePass, setHidePass] = useState(true)
     const navigation = useNavigation();
     const {logar} = useMyContext();
     const {logarGmail} = useMyContext();
-
-    
    
-
     type AuthResponse = {
         type: string;
         params: {
@@ -47,22 +43,16 @@ const Login : React.FC = () => {
             setError('Senha muito pequena!')
         }
         else{
-            try {
-                const response = await logar(email, senha);
-                navigation.navigate('Principal');
+                try {
+                    const response = await logar(email, senha);
+                    navigation.navigate('Principal');
                 
-            } catch (error) {
-                setErro('Erro ao logar')
-                console.log(error);
+                } catch (error) {
+                    setError(error.message);
+                    
+                }          
                 
-                
-            }
-            
-
-        }
-          
-        
-        
+        }        
     }
     async function handleSingIn (){
         try{
@@ -144,21 +134,13 @@ const Login : React.FC = () => {
             <Pressable  style={styles.atualizar} onPress={()=>handleNextStep()}>
                 <Text style={styles.text}>Enviar</Text>
             </Pressable>
-            {erro ? (
-                <Text style={styles.textError}>
-                    {erro}
-                </Text>
-            ) : null} 
+            
             <Text style={styles.ou}>Ou</Text>
             <Pressable  style={styles.google} onPress={()=>handleSingIn()}>
                 <AntDesign name="google" size={24} color="black" />
                 <Text style={styles.buttonText}>Continuar pelo google</Text>
             </Pressable>
-            {erro ? (
-                <Text style={styles.textError}>
-                    {erro}
-                </Text>
-            ) : null} 
+           
         </ScrollView>
       
     );

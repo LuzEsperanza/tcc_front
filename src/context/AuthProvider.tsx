@@ -36,8 +36,7 @@ interface IContexto{
           email, senha
         }
         const response = await api.post('/denunciante/login', dados);
-      
-  
+       
         const {denunciante, token} = response.data as ResponseData;
         console.log(denunciante.token);
   
@@ -47,6 +46,8 @@ interface IContexto{
         setDenunciante(denunciante);
       } catch (error) {
         console.log(error);
+        throw new Error('Email ou senha incorretos');
+        
       }
     }
     async function logarGmail(token:string){  

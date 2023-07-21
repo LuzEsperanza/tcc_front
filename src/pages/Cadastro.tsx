@@ -16,6 +16,7 @@ const Cadastro : React.FC = () => {
     const [error, setError] = useState('');
     const [comfirme, setComfirme] = useState(String);
     const [validSenha, setValidSenha] = useState(false);
+    
     const handleValidEmail = (texto) => {
         let res =  /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
         
@@ -52,8 +53,16 @@ const Cadastro : React.FC = () => {
             setError('Senhas diferentes!')
         }
         else{
-            await api.post('/denunciante/cadastro', {nome, email, senha})
-            navigation.navigate('Login')           
+            try {
+                await api.post('/denunciante/cadastro', {nome, email, senha})
+                
+            
+            } catch (error) {
+                setError("Possivelmente já existe email cadastrado");
+                
+            }  
+            
+            // navigation.navigate('Login')           
 
         }
         
@@ -134,10 +143,8 @@ const Cadastro : React.FC = () => {
                 <Text style={styles.textError}>
                     {error}
                 </Text>
-            ) : null}             
-
-            
-            
+            ) : null}
+                      
             <Pressable  style={styles.cadastro} onPress={()=>handleNextStep()}>
                 <Text style={styles.buttonText}>Cadastrar</Text>
             </Pressable>

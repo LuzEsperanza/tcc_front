@@ -21,6 +21,7 @@ const LoginAnonimo : React.FC = () => {
     const [codigo, setCodigo] = useState(String);
     const {logar} = useMyContext();
     const [anonimo, setAnonimo] = useState<Anonimo | null>(null);
+    const [erro, setErro] = useState('');
 
     async function handleSingIn (){
         console.log(codigo)
@@ -37,7 +38,7 @@ const LoginAnonimo : React.FC = () => {
             // não está dando certo
             // await logar(codigo);            
         } catch (error) {
-            console.log(error);
+            setErro('Possivelmente a senha inserida não existe')
         }     
         
     }
@@ -46,13 +47,17 @@ const LoginAnonimo : React.FC = () => {
         <ScrollView style={styles.container}>
             <View  style={styles.inputArea}>
                 <TextInput style={styles.input}
-                    placeholder="Digite seu código" 
+                    placeholder="Senha" 
                     value={codigo}
                     onChangeText={(text)=> setCodigo(text)}
-                />
-            
+                />           
 
             </View>
+            {erro ? (
+                <Text style={styles.textError}>
+                    {erro}
+                </Text>
+            ) : null} 
             
             <Pressable  style={styles.atualizar} onPress={()=>handleSingIn()}>
                 <Text style={styles.text}>Enviar</Text>
