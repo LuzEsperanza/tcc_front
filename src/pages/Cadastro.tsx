@@ -55,14 +55,14 @@ const Cadastro : React.FC = () => {
         else{
             try {
                 await api.post('/denunciante/cadastro', {nome, email, senha})
-                
+                navigation.navigate('Login') 
             
             } catch (error) {
                 setError("Possivelmente já existe email cadastrado");
                 
             }  
             
-            // navigation.navigate('Login')           
+                      
 
         }
         

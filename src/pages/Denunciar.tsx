@@ -86,10 +86,10 @@ const Denunciar : React.FC = () => {
     async function handleNextStep (){
        const identificado = denunciante.denuncianteID;
         // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
-        // if (!descricao.trim()){
-        //     setValiDescricao('Escreva uma descrição do ocorrido')
-        // }
-        // else{
+        if (!descricao.trim()){
+            setValiDescricao('Escreva uma descrição do ocorrido')
+        }        
+        else{
             const informacao = await api.post('/denuncia', {identificado, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
             {
                 return response.data           
@@ -107,23 +107,19 @@ const Denunciar : React.FC = () => {
                     type: 'image/jpg',
                     uri: imageURI,
                 } as any);
-                // console.log(data)
-                
-           
+                // console.log(data) 
                 
             })
             const config = {     
                 headers: { 'content-type': 'multipart/form-data'}
             };
-            await api.post('/foto', data, config );
-            
+            await api.post('/foto', data, config );            
             
             console.log(imagesPath)
               
             navigation.navigate('Check', informacao.id);  
 
-        // }
-              
+        }              
         
     };    
    

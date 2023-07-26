@@ -40,7 +40,7 @@ const data = [
 const App = () => {
 
     const [products, setProducts] = React.useState(data);
-
+    const [error, setError] = useState('');
 
     const handleChange = (id) => {
 
@@ -128,12 +128,20 @@ const App = () => {
 
     async function salvar(denuncia, crimeAmbiental) {
         console.log(typeof crimeAmbiental)
-        await api.post('/pertence', {crimeAmbiental, denuncia}).then((response) =>
-        {
-           return response.data
-          
-           
-        })
+        try {
+            await api.post('/pertence', {crimeAmbiental, denuncia}).then((response) =>
+            {
+               return response.data
+              
+               
+            })
+            
+            
+        } catch (error) {
+           console.log("Erro")
+            
+        }  
+       
         
     }
    
@@ -143,11 +151,17 @@ const App = () => {
             delito.push(id)      
        
         })
-        delito.forEach( d =>{
-            salvar(denuncia, d)
-        })
-        console.log("oi")
-        navigation.navigate('PrincipalAnonimo',{id})
+        if(delito.length > 0){
+            delito.forEach( d =>{
+                salvar(denuncia, d)
+            })
+            navigation.navigate('PrincipalAnonimo',{id})         
+        }
+        else{
+            setError("Selecione um possível delito")
+        }
+        
+        
          
     } 
     
@@ -168,6 +182,11 @@ const App = () => {
                 {renderFlatList(selected)}
 
             </View>
+            {error ? (
+                <Text style={styles.textError}>
+                    {error}
+                </Text>
+            ) : null}
             <Pressable style={styles.cadastro} onPress={()=>handleNextStep()}>
                 <Text style={styles.buttonText}>Salvar</Text>
             </Pressable>
@@ -257,6 +276,14 @@ const styles = StyleSheet.create({
         color: '#f9fafc'
 
     },
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        marginTop: 0.5,
+        color: '#8B0000',
+        marginBottom: 10
+
+    }
 
 });
 

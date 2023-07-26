@@ -53,7 +53,7 @@ const Principal : React.FC = () => {
                     <Text style={styles.title}>{denuncia.CrimeAmbiental.tilulo}</Text>
 
                     <Text style={styles.status}>Data de criação</Text>
-                            <View style={styles.input}>
+                            <View style={styles.inputData}>
                                 <Feather  size={20} style={styles.calendario} name='calendar'/>
                                 <Text  style={styles.data}>{denuncia.horaDenuncia}</Text>
 
@@ -152,6 +152,18 @@ const styles = StyleSheet.create({
         marginBottom: 1,
         textAlign: 'center',
         width: 200,
+    },
+    inputData : {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        borderWidth: 1.4,
+        borderRadios: 20,
+        flex: 1,
+        padding: 5,
+        alignItems: 'center',
+        marginBottom: 1,
+        textAlign: 'center',
+        width: 120,       
     },
     inputStatus : {
         flexDirection: 'row',

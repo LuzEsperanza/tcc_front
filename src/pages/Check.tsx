@@ -33,11 +33,11 @@ const data = [
 ];
 
 
+
 const App = () => {
 
     const [products, setProducts] = React.useState(data);
-
-
+    const [error, setError] = useState('');
     const handleChange = (id) => {
 
         let temp = products.map((product) => {
@@ -61,7 +61,7 @@ const App = () => {
 
 
     const renderFlatList = (renderData) => {
-
+        
         return (
 
             <FlatList
@@ -136,10 +136,17 @@ const App = () => {
             delito.push(id)      
        
         })
-        delito.forEach( d =>{
-            salvar(id, d)
-        })
-        navigation.navigate('Principal')
+        if(delito.length > 0){
+            delito.forEach( d =>{
+                salvar(id, d)
+            })
+            navigation.navigate('Principal');            
+        }
+        else{
+            setError("Selecione um possível delito")
+        }
+        
+        
          
     } 
     
@@ -160,11 +167,18 @@ const App = () => {
                 {renderFlatList(selected)}
 
             </View>
+            {error ? (
+                <Text style={styles.textError}>
+                    {error}
+                </Text>
+            ) : null}
             <Pressable style={styles.cadastro} onPress={()=>handleNextStep()}>
                 <Text style={styles.buttonText}>Salvar</Text>
             </Pressable>
+            
 
             <StatusBar />
+            
 
         </View>
 
@@ -249,6 +263,14 @@ const styles = StyleSheet.create({
         color: '#f9fafc'
 
     },
+    textError :{
+        fontFamily: 'Roboto',
+        fontSize: 20,
+        marginTop: 0.5,
+        color: '#8B0000',
+        marginBottom: 10
+
+    }
 
 });
 

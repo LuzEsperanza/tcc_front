@@ -97,18 +97,18 @@ const Denunciar : React.FC = () => {
         else{
             // console.log(titulo,descricao,numero, rua, horarioAbordagem, identificado, informacaoDenunciado, latitude, longitude)
         
-        const informacao = await api.post('/denuncia/anonimo', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
-        {
+            const informacao = await api.post('/denuncia/anonimo', {anonima, informacaoDenunciado, descricao, horarioAbordagem, rua, numero, longitude, latitude  }).then((response) =>
+            {
            return response.data         
            
-        })
-        const data = new FormData();
-        // console.log(informacao.id);
-        const denuncia = informacao.id
+            })
+            const data = new FormData();
+            // console.log(informacao.id);
+            const denuncia = informacao.id
 
-        data.append('denuncia', informacao.id);       
+            data.append('denuncia', informacao.id);       
         
-        imagesPath.forEach( async (imageURI, index) =>{
+            imagesPath.forEach( async (imageURI, index) =>{
           
             data.append('images', {
                 name: `image${index}.jpg`,
